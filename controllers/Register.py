@@ -2,36 +2,24 @@ import os
 import sys
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
+from google.appengine.api import users
 import main
 from urlparse import urlparse
 from models.models import UserDetails
-
-
-
 from google.appengine.ext import db
-
-class Greeting(db.Model):
-    author = db.UserProperty()
-    content = db.StringProperty(multiline=True)
-    date = db.DateTimeProperty(auto_now_add=True)
-
  
 class Save(webapp.RequestHandler):
     def post(self):
-        
+        emailName = self.request.get('emailname') 
         userDetails = UserDetails()
         
-        #userDetails.accountName = "AccountName"
-        userDetails.emailName = "emailaddress@domain.com"
-      
-        userDetails.put()
-        #email = self.request.get("e")
-        #messages = MailMessage.all().filter("toAddress = ", email).order("-dateReceived")
-
-      
+        if users.get_current_user():
+            userDetails.accountName = users.get_current_user()       
         
-        #viewdata = { 'messages':messages  , 'to':email}
-
+        userDetails.emailName = emailName      
+        userDetails.put()
+        
+        viewdata = {'emailName':emailName}
+        
         path = os.path.join(main.ROOT_DIR, 'views/register.html')
-        self.response.out.write(template.render(path,""))
-    
+        self.response.out.write(template.render(path,viewdata))

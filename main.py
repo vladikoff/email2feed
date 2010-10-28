@@ -10,13 +10,16 @@ import controllers.Register
 
 ROOT_DIR = os.path.dirname(__file__)
 
-application = webapp.WSGIApplication(
-                                     [MailHandler.mapping()
-                                      ,('/',controllers.Home.Index)
-                                      ,('/feed/show',controllers.Feed.Show)
-                                      ,('/feed/list',controllers.Feed.List)
-                                      ,('/help', controllers.Home.Help)
-                                      ,('/register', controllers.Register.Save)
+application = webapp.WSGIApplication([
+                                     (r'/web/(.*)', controllers.Feed.ShowAll)
+                                    ,(r'/xml/(.*)', controllers.Feed.ShowXML)
+                                    ,(r'/atom/(.*)', controllers.Feed.ShowAtom)
+                                    ,('/',controllers.Home.Index)                                   
+                                    ,('/feed/show',controllers.Feed.Show)
+                                    ,('/feed/list',controllers.Feed.List)
+                                    ,('/help', controllers.Home.Help)
+                                    ,('/register', controllers.Register.Save)
+                                    ,MailHandler.mapping()
                                       ],
                                      debug=True)
 

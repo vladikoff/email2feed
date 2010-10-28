@@ -22,7 +22,7 @@ class Index(webapp.RequestHandler): #front page
             authName = USER_LOGOUT  
                  
         
-        viewdata = { 'authControl':authControl, 'authName': authName, 'regShow': regShow}
+        viewdata = {'authControl':authControl, 'authName': authName, 'regShow': regShow}
         
         self.response.out.write(template.render(path, viewdata))
 

@@ -32,3 +32,20 @@ class List(webapp.RequestHandler):
         path = os.path.join(main.ROOT_DIR, 'views/feed/list.html')
         self.response.out.write(template.render(path, viewdata))
 
+class ShowAll(webapp.RequestHandler):
+    def get(self, user):         
+        viewdata = {'user':user}
+        path = os.path.join(main.ROOT_DIR, 'views/u/web.html')
+        self.response.out.write(template.render(path, viewdata))
+        
+class ShowXML(webapp.RequestHandler):
+    def get(self, user):         
+        viewdata = {'user':user}
+        path = os.path.join(main.ROOT_DIR, 'views/u/xml.xml')
+        self.response.out.write(template.render(path, viewdata))
+        
+class ShowAtom(webapp.RequestHandler):
+    def get(self, user):         
+        viewdata = {'user':user}
+        path = os.path.join(main.ROOT_DIR, 'views/u/atom.xml')
+        self.response.out.write(template.render(path, viewdata))                
