@@ -4,7 +4,7 @@ import os
 #Application root dir
 APP_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 #Application name
-APPNAME = "sendfeedmail" 
+APPNAME = "sendfeedemail" 
 #Minimum user name characters
 MIN_USERNAME_CHAR = 5
 #Maximum user name characters

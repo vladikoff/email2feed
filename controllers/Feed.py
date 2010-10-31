@@ -30,9 +30,9 @@ class List(webapp.RequestHandler): #Old Feed Controller, lists the feed
 class ShowAll(webapp.RequestHandler): #Displays the user's web feed
     def get(self, user):         
              
-        to = user + config.SETTINGS['emaildomain']
-        emails = MailMessage.all().filter("toAddress = ", to).order("-dateReceived")        
-        viewdata = { 'emails':emails, 'to':to, 'user':user}        
+        EMAIL_TO = user + config.SETTINGS['emaildomain']
+        emails = MailMessage.all().filter("toAddress = ", EMAIL_TO).order("-dateReceived")        
+        viewdata = { 'emails':emails, 'to':EMAIL_TO, 'user':user}        
         
         path = os.path.join(main.ROOT_DIR, 'views/u/web.html')
         self.response.out.write(template.render(path, viewdata))      
