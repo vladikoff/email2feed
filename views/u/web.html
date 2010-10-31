@@ -1,1 +1,19 @@
-{{ user }}
+{% extends "../base.html" %}
+{% block content %}
+<nav>
+   
+      <ul>
+        <li><a href="/rss/{{ user }}">RSS</a></li>
+        <li><a href="/atom/{{ user }}">Atom</a></li>
+        <li><a href="/settings">Settings</a></li>
+      </ul>
+    
+</nav>
+  <h2>Feed at {{ user }}</h2>
+ 
+  {% for email in emails %}
+    <div class="msg">
+      <div class="msg-from">{{ email.fromAddress }}</div><div class="msg-subject">{{ email.subject }}</div><div class="msg-text">{{ email.body }}</div><div class="msg-date">{{ email.dateReceived}}</div>
+    </div>
+  {% endfor %}
+{% endblock %}

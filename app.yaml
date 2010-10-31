@@ -12,3 +12,7 @@ handlers:
 
 - url: /.*
   script: main.py
+  
+- url: /_ah/mail/.+ 
+  script: /util/MailHandler.py
+  login: admin

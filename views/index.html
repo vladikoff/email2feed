@@ -1,12 +1,11 @@
 {% extends "base.html" %}
-{% block nav %}{% endblock %}
 
 {% block content %}
     <h2>Get Started Now!</h2>
     <a href="{{ authControl }}">{{ authName }}</a>
     {% if regShow %}
       <form action="/register" method="post"> 
-        <label for="em">Desired Email Address</label><input type="text" name="emailname" id="em" value="" /><input type="text" name="domain" disabled="disabled" value="@thisdomain.com" />
+        <label for="em">Desired Email Address</label><input type="text" name="emailname" id="em" value="" /><input type="text" name="domain" disabled="disabled" value="@{{ hostname }}.appspotmail.com" />
         <input type="submit" value="Let's do this!" />
       </form>   
      {% endif %}  

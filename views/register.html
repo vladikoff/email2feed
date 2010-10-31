@@ -3,5 +3,6 @@
 
 {% block content %}
     <h2>Success!</h2>    
-    <p>Your feed is available <a href="/feed/{{ emailName }}">here</a>. Don't forget to bookmark that address!</p>   
+    <p>You can now start forwarding your email to <span id="fe">{{emailName}}@{{ hostname }}.appspotmail.com</span></p>
+    <p>Your feed is available <a href="/web/{{ emailName }}">here</a>. Don't forget to bookmark that address!</p>   
 {% endblock %}

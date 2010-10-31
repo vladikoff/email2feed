@@ -11,7 +11,7 @@ import controllers.Register
 ROOT_DIR = os.path.dirname(__file__)
 
 application = webapp.WSGIApplication([
-                                     (r'/web/(.*)', controllers.Feed.ShowAll)
+                                     (r'/u/(.*)', controllers.Feed.ShowAll)
                                     ,(r'/xml/(.*)', controllers.Feed.ShowXML)
                                     ,(r'/atom/(.*)', controllers.Feed.ShowAtom)
                                     ,('/',controllers.Home.Index)                                   

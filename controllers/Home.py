@@ -11,7 +11,11 @@ class Index(webapp.RequestHandler): #front page
         
         USER_LOGIN = "Login"
         USER_LOGOUT = "Log out"
-        
+        hostname = os.environ['SERVER_NAME']
+        if os.environ.get('HTTP_HOST'):
+            hostname = os.environ['HTTP_HOST']
+        else:
+            hostname = os.environ['SERVER_NAME']
         path = os.path.join(main.ROOT_DIR, 'views/index.html')
         user = users.get_current_user() 
         regShow = False #hide registrations form
@@ -20,11 +24,13 @@ class Index(webapp.RequestHandler): #front page
         if user: #if logged in and ready to register with the service  
             regShow = True
             authName = USER_LOGOUT  
-                 
+
         
-        viewdata = {'authControl':authControl, 'authName': authName, 'regShow': regShow}
+        viewdata = {'authControl':authControl, 'authName': authName, 'regShow': regShow,'hostname':hostname}
         
         self.response.out.write(template.render(path, viewdata))
+        
+                    
 
 class Help(webapp.RequestHandler): #help and faqs page
     def get(self):

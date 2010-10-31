@@ -34,9 +34,20 @@ class List(webapp.RequestHandler):
 
 class ShowAll(webapp.RequestHandler):
     def get(self, user):         
-        viewdata = {'user':user}
+     
+        
+        
+        to = user + "@localhost.appspotmail.com"
+        emails = MailMessage.all().filter("toAddress = ", to).order("-dateReceived")
+
+        
+        viewdata = { 'emails':emails, 'to':to, 'user':user}
+        
+        
         path = os.path.join(main.ROOT_DIR, 'views/u/web.html')
-        self.response.out.write(template.render(path, viewdata))
+        self.response.out.write(template.render(path, viewdata))     
+        
+        
         
 class ShowXML(webapp.RequestHandler):
     def get(self, user):         
