@@ -7,6 +7,7 @@ import main
 from urlparse import urlparse
 import datetime
 from libs import PyRSS2Gen
+import config
 
 
 class Index(webapp.RequestHandler):
@@ -39,7 +40,7 @@ class ShowAll(webapp.RequestHandler):
      
         
         
-        to = user + "@localhost.appspotmail.com"
+        to = user + config.SETTINGS['emaildomain']
         emails = MailMessage.all().filter("toAddress = ", to).order("-dateReceived")
 
         
@@ -54,19 +55,13 @@ class ShowAll(webapp.RequestHandler):
 class ShowXML(webapp.RequestHandler):
     def get(self, user):     
         
-        if os.environ.get('HTTP_HOST'):
-            hostname = os.environ['HTTP_HOST']
-        else:
-            hostname = os.environ['SERVER_NAME']   
+        FEED_TITLE = user + " feed at " + config.SETTINGS['hostname']
+        FEED_URL = "http://"+config.SETTINGS['hostname']+"/xml/"+user
         
-        FEED_TITLE = user + " feed at " + hostname
-        FEED_URL = "http://"+hostname+"/xml/"+user
-        
-            
-        messages = MailMessage.all()        
-        messages.order("-dateReceived")
-        results = messages.fetch(10)
-        
+        to = user + config.SETTINGS['emaildomain']    
+        messages = MailMessage.all().filter("toAddress = ", to).order("-dateReceived")      
+     
+        results = messages.fetch(10)        
 
 
         rss_items = []

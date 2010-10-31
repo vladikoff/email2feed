@@ -7,6 +7,8 @@ import main
 from urlparse import urlparse
 from models.models import UserDetails
 from google.appengine.ext import db
+import config
+import re
  
 class Save(webapp.RequestHandler):
     def post(self):
@@ -14,18 +16,35 @@ class Save(webapp.RequestHandler):
         USER_EXISTS = "Username Taken!"        
         
         userExists = False;
-        emailName = self.request.get('emailname') 
+        emailExists = False;
         
-        if os.environ.get('HTTP_HOST'):
-            hostname = os.environ['HTTP_HOST']
-        else:
-            hostname = os.environ['SERVER_NAME']            
+        emailName = self.request.get('emailname').strip().replace('-', '').replace(' ', '') 
+        emailNameLength = len(emailName)
+        fullEmailName = emailName + config.SETTINGS['emaildomain']
+
+   
+        #Does this Google account have an account already?      
         existingUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user())
         for existingUser in existingUsers:        
-            userExists = True;    
-       
-        if userExists:
-            self.redirect("/#exists")          
+            userExists = True;
+        
+        #Is this email taken?
+        existingEmails = UserDetails.gql("WHERE emailName = :1 LIMIT 1",emailName)
+        for existingEmail in existingEmails:        
+            emailExists = True;                   
+      
+        
+        
+        if Save.validateEmail(fullEmailName) == 0:
+            self.redirect("/#invalidemail")
+        elif userExists:
+            self.redirect("/#accountexists") 
+        elif emailExists:
+            self.redirect("/#emailexists")      
+        elif emailNameLength <= config.SETTINGS['minusername']:
+            self.redirect("/#short")        
+        elif emailNameLength >= config.SETTINGS['maxusername']:
+            self.redirect("/#long")                
         else:
             userDetails = UserDetails()     
             if users.get_current_user():
@@ -34,6 +53,16 @@ class Save(webapp.RequestHandler):
             userDetails.emailName = emailName      
             userDetails.put()
             
-            viewdata = {'emailName':emailName, 'hostname':hostname}            
+            viewdata = {'emailName':emailName, 'hostname':config.SETTINGS['hostname']}            
             path = os.path.join(main.ROOT_DIR, 'views/register.html')           
             self.response.out.write(template.render(path,viewdata))
+            
+            
+    @staticmethod    
+    def validateEmail(email):
+       
+        if re.match("^[a-zA-Z0-9._%-]+@[a-zA-Z0-9._%-]+.[a-zA-Z]{2,6}$", email) != None:
+            return 1 #Valid Email
+        else:
+            return 0 #Invalid Email
+        

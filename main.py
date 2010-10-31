@@ -12,7 +12,7 @@ ROOT_DIR = os.path.dirname(__file__)
 
 application = webapp.WSGIApplication([
                                      (r'/u/(.*)', controllers.Feed.ShowAll)
-                                    ,(r'/xml/(.*)', controllers.Feed.ShowXML)
+                                    ,(r'/rss/(.*)', controllers.Feed.ShowXML)
                                     ,(r'/atom/(.*)', controllers.Feed.ShowAtom)
                                     ,('/',controllers.Home.Index)                                   
                                     ,('/feed/show',controllers.Feed.Show)
