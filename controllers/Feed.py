@@ -5,6 +5,8 @@ from models.models import Recipient, MailMessage
 from google.appengine.ext.webapp import template
 import main
 from urlparse import urlparse
+import datetime
+from libs import PyRSS2Gen
 
 
 class Index(webapp.RequestHandler):
@@ -50,10 +52,42 @@ class ShowAll(webapp.RequestHandler):
         
         
 class ShowXML(webapp.RequestHandler):
-    def get(self, user):         
-        viewdata = {'user':user}
-        path = os.path.join(main.ROOT_DIR, 'views/u/xml.xml')
-        self.response.out.write(template.render(path, viewdata))
+    def get(self, user):     
+        
+        if os.environ.get('HTTP_HOST'):
+            hostname = os.environ['HTTP_HOST']
+        else:
+            hostname = os.environ['SERVER_NAME']   
+        
+        FEED_TITLE = user + " feed at " + hostname
+        FEED_URL = "http://"+hostname+"/xml/"+user
+        
+            
+        messages = MailMessage.all()        
+        messages.order("-dateReceived")
+        results = messages.fetch(10)
+        
+
+
+        rss_items = []
+        for msg in results:
+            item = PyRSS2Gen.RSSItem(title=msg.subject,
+                                     description=msg.body,
+                                     pubDate=msg.dateReceived,
+                                     guid = PyRSS2Gen.Guid(msg.fromAddress)
+                                     )
+            rss_items.append(item)
+
+    
+        rss = PyRSS2Gen.RSS2(title=FEED_TITLE,
+                             link=FEED_URL,
+                             description="",
+                             lastBuildDate=datetime.datetime.now(),
+                             items=rss_items
+                            )
+        rss_xml = rss.to_xml()
+        self.response.headers['Content-Type'] = 'application/rss+xml'
+        self.response.out.write(rss_xml)
         
 class ShowAtom(webapp.RequestHandler):
     def get(self, user):         

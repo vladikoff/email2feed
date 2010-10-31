@@ -5,7 +5,7 @@ class MailMessage(db.Model):
     toAddress = db.StringProperty()
     fromAddress = db.StringProperty()
     subject = db.StringProperty()
-    body = db.StringProperty(multiline=True)
+    body = db.TextProperty()
     dateSent = db.StringProperty()
     dateReceived = db.DateTimeProperty()
 
