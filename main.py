@@ -11,15 +11,15 @@ import controllers.Register
 ROOT_DIR = os.path.dirname(__file__)
 
 application = webapp.WSGIApplication([
-                                     (r'/u/(.*)', controllers.Feed.ShowAll)
-                                    ,(r'/rss/(.*)', controllers.Feed.ShowXML)
-                                    ,(r'/atom/(.*)', controllers.Feed.ShowAtom)
-                                    ,('/',controllers.Home.Index)                                   
-                                    ,('/feed/show',controllers.Feed.Show)
-                                    ,('/feed/list',controllers.Feed.List)
-                                    ,('/help', controllers.Home.Help)
-                                    ,('/register', controllers.Register.Save)
-                                    ,MailHandler.mapping()
+                                     (r'/u/(.*)', controllers.Feed.ShowAll) #user web feed
+                                    ,(r'/rss/(.*)', controllers.Feed.ShowXML) #user RSS feed
+                                    ,(r'/atom/(.*)', controllers.Feed.ShowAtom) #user Atom Feed
+                                    ,('/',controllers.Home.Index) #Home page                                  
+                                    ,('/feed/show',controllers.Feed.Show) #Old Feed controller 1
+                                    ,('/feed/list',controllers.Feed.List) #Old Feed controller 2
+                                    ,('/help', controllers.Home.Help) #Help page
+                                    ,('/register', controllers.Register.Save) #Registration page
+                                    ,MailHandler.mapping() #Used for email post mapping
                                       ],
                                      debug=True)
 
