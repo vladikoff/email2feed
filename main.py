@@ -7,6 +7,7 @@ import controllers.Misc
 import controllers.Feed
 import controllers.Home
 import controllers.Register
+import controllers.Settings
 
 ROOT_DIR = os.path.dirname(__file__)
 
@@ -19,6 +20,7 @@ application = webapp.WSGIApplication([
                                     ,('/feed/list',controllers.Feed.List) #Old Feed controller 2
                                     ,('/help', controllers.Home.Help) #Help page
                                     ,('/register', controllers.Register.Save) #Registration page
+                                    ,('/settings', controllers.Settings.Index) #Settings page
                                     ,MailHandler.mapping() #Used for email post mapping
                                       ],
                                      debug=True)

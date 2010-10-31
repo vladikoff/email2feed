@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+   <h2>Settings</h2>
+   
+   <h3>Manage Trusted Incoming Emails</h3>
+   <p></p>
+  
+    <p>No Trusted Emails Added!</p>
+  
+   <input type="text" value="" /> <input type="button" value="Add Email" >
+   
+   <div>
+     <input type="checkbox" value="onlytrust"/>  Only Accept Emails from my trusted emails above. (This will block all messages, except the list you provide above.)
+   </div>
+   <h3>Manage Blocked Emails</h3>
+    
+     <p>Nothing is blocked!</p>
+    
+    <input type="text" value="" /> <input type="button" value="Block Email" >
+   
+   <h3>Delete my Account</h3>
+   <input type="button" value="Delete it!" />
+   
+   
+{% endblock %}
