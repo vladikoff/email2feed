@@ -10,6 +10,7 @@ from libs import PyRSS2Gen
 import config
 
 
+
 class Index(webapp.RequestHandler):
     def get(self):
         self.response.out("home")
@@ -84,8 +85,15 @@ class ShowXML(webapp.RequestHandler):
         self.response.headers['Content-Type'] = 'application/rss+xml'
         self.response.out.write(rss_xml)
         
-class ShowAtom(webapp.RequestHandler):
+class ShowAtom(webapp.RequestHandler):    
     def get(self, user):         
-        viewdata = {'user':user}
-        path = os.path.join(main.ROOT_DIR, 'views/u/atom.xml')
-        self.response.out.write(template.render(path, viewdata))                
+         
+        FEED_TITLE = user + " feed at " + config.SETTINGS['hostname']
+        FEED_URL = "http://"+config.SETTINGS['hostname']+"/xml/"+user
+        
+        to = user + config.SETTINGS['emaildomain']    
+        messages = MailMessage.all().filter("toAddress = ", to).order("-dateReceived")            
+        results = messages.fetch(10)          
+        self.response.headers['Content-Type'] = 'application/atomsvc+xml'
+        self.response.out.write(template.render("views/u/atom.xml", {"results": results,"feedTitle":FEED_TITLE,"feedUrl":FEED_URL}))     
+        
