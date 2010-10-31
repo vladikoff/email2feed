@@ -1,5 +1,5 @@
 from google.appengine.ext import db
-
+import config
 
 class MailMessage(db.Model):
     toAddress = db.StringProperty()
@@ -16,4 +16,13 @@ class Recipient(db.Model):
 class UserDetails(db.Model):
     accountName = db.UserProperty()
     emailName = db.StringProperty(multiline=False)
-    date = db.DateTimeProperty(auto_now_add=True)
+    date = db.DateTimeProperty(auto_now_add=True)    
+    trustedMode = db.BooleanProperty(default=config.SETTINGS['trustedmode'])
+    
+class TrustedEmails(db.Model):
+    accountName = db.UserProperty()
+    trustedEmail = db.StringProperty()
+
+class BlockedEmails(db.Model):
+    accountName = db.UserProperty()
+    blockedEmail = db.StringProperty()

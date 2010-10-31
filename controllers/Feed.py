@@ -3,6 +3,8 @@ import sys
 from google.appengine.ext import webapp
 from models.models import Recipient, MailMessage
 from google.appengine.ext.webapp import template
+from google.appengine.api import users
+from models.models import UserDetails
 import main
 from urlparse import urlparse
 import datetime
@@ -30,9 +32,23 @@ class List(webapp.RequestHandler): #Old Feed Controller, lists the feed
 class ShowAll(webapp.RequestHandler): #Displays the user's web feed
     def get(self, user):         
              
-        EMAIL_TO = user + config.SETTINGS['emaildomain']
-        emails = MailMessage.all().filter("toAddress = ", EMAIL_TO).order("-dateReceived")        
-        viewdata = { 'emails':emails, 'to':EMAIL_TO, 'user':user}        
+        EMAIL_TO = user + config.SETTINGS['emaildomain']        
+        
+        
+        existingUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
+        for existingUser in existingUsers:  
+            emailName =  existingUser.emailName
+            
+        if user == emailName: 
+            loggedIn = True
+        else:
+            loggedIn = False
+        
+        emails = MailMessage.all().filter("toAddress = ", EMAIL_TO).order("-dateReceived")      
+        emailCount = emails.count() 
+        if emailCount == 0:
+            empty = True 
+        viewdata = { 'emails':emails, 'to':EMAIL_TO, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'empty': empty}      
         
         path = os.path.join(main.ROOT_DIR, 'views/u/web.html')
         self.response.out.write(template.render(path, viewdata))      
