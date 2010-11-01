@@ -21,8 +21,8 @@ class UserDetails(db.Model):
     
 class TrustedEmails(db.Model):
     accountName = db.UserProperty()
-    trustedEmail = db.StringProperty()
+    email = db.StringProperty()
 
 class BlockedEmails(db.Model):
     accountName = db.UserProperty()
-    blockedEmail = db.StringProperty()
+    email = db.StringProperty()

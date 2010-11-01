@@ -35,8 +35,8 @@ class ShowAll(webapp.RequestHandler): #Displays the user's web feed
         EMAIL_TO = user + config.SETTINGS['emaildomain']        
         
         accountExists = False   
-  
-        
+        emailName = ""
+        empty = False
         currentUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
         for currentUser in currentUsers:  
             emailName =  currentUser.emailName

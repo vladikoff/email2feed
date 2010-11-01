@@ -15,31 +15,53 @@
    
    
    <h3>Manage Trusted Incoming Emails</h3>
-   <p></p>
-  
-    <p>No Trusted Emails Added!</p>
-    
+   {% if tResult %}
+    <form action="/settings" method="post">
+      <ul>
+       {% for trustedEmail in trustedEmails %}  
+        <li><input type="checkbox" name="emails[]" value="{{ trustedEmail.email }}" /> {{ trustedEmail.email }}</li>
+       {% endfor %}      
+      </ul>
+      <input type="submit" name="remove-trusted" value="Remove" />
+    </form>
+   {% else %} 
+      <p>No Trusted Emails Added!</p>      
+   {% endif %}
+
   
    <form action="/settings" method="post">     
-      <input type="text" value="" name="trustedEmail" /> <input type="submit" name="trusted" value="Add Trusted Email">
+      <input type="hidden" name="action" value="trust" />     
+      <input type="text" value="" name="email" /> <input type="submit" name="trusted" value="Add Trusted Email">
    </form>
 
    <h3>Trust Only Mode</h3>
-   <form action="/settings" method="post">     
+   <form action="/settings" method="post">
+      <input type="hidden" name="action" value="trustmode" />     
       <input type="submit" name="trusted" value="{% if trustedModeCheck %}Disable{% else %}Enable{% endif %}">{{trustedMode}}
       <p>Only Accept Emails from my trusted emails above. (This will block all messages, except the list you provide above.)</p>
    </form>
 
    <h3>Manage Blocked Emails</h3>
-    
-   <p>Nothing is blocked!</p>
-   <form action="/settings" method="post">     
-      <input type="text" value="" name="blockedEmail" /> <input type="submit"  name="blocked" value="Block Email">
+   
+   {% if bResult %}
+     <ul>      
+       {% for blockedEmail in blockedEmails %}
+        <li><input type="checkbox" name="emails[]" value="{{ blockedEmail.email }}" /> {{ blockedEmail.email }}</li>
+       {% endfor %} 
+     </ul>
+     <input type="submit" name="remove-blocked" value="Remove" />
+   {% else %}   
+      <p>Nothing is blocked!</p>
+   {% endif %}  
+
+   <form action="/settings" method="post"> 
+      <input type="hidden" name="action" value="block" />         
+      <input type="text" value="" name="email" /> <input type="submit"  name="blocked" value="Block Email">
    </form>
    
    <h3>Delete my Account</h3>
    <form action="/settings" method="post">    
-     <input type="hidden" name="delacc" value="delete" />
+     <input type="hidden" name="action" value="delete" />
      <input type="submit" name="delete" value="Delete it!" />
    </form>
    
