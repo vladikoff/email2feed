@@ -20,12 +20,12 @@
     <p>No Trusted Emails Added!</p>
     
   
-   <form action="/settings" method="post" name="f-trust">     
+   <form action="/settings" method="post">     
       <input type="text" value="" name="trustedEmail" /> <input type="submit" name="trusted" value="Add Trusted Email">
    </form>
 
    <h3>Trust Only Mode</h3>
-   <form action="/settings" method="post" name="f-trustmode">     
+   <form action="/settings" method="post">     
       <input type="submit" name="trusted" value="{% if trustedModeCheck %}Disable{% else %}Enable{% endif %}">{{trustedMode}}
       <p>Only Accept Emails from my trusted emails above. (This will block all messages, except the list you provide above.)</p>
    </form>
@@ -33,12 +33,13 @@
    <h3>Manage Blocked Emails</h3>
     
    <p>Nothing is blocked!</p>
-   <form action="/settings" method="post" name="f-blocks">     
+   <form action="/settings" method="post">     
       <input type="text" value="" name="blockedEmail" /> <input type="submit"  name="blocked" value="Block Email">
    </form>
    
    <h3>Delete my Account</h3>
-   <form action="/settings" method="post" name="f-delete">    
+   <form action="/settings" method="post">    
+     <input type="hidden" name="delacc" value="delete" />
      <input type="submit" name="delete" value="Delete it!" />
    </form>
    

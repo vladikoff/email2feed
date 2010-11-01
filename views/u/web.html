@@ -1,19 +1,38 @@
 {% extends "../base.html" %}
 {% block content %}
-<nav>
-   
-      <ul>
-        <li><a href="/rss/{{ user }}">RSS</a></li>
-        <li><a href="/atom/{{ user }}">Atom</a></li>
-        <li><a href="/settings">Settings</a></li>
-      </ul>
+  {% if accountExists %}
+    <nav>  
+          <ul>
+            <li><a href="/u/{{ user }}">Web</a></li> 
+            <li><a href="/rss/{{ user }}">RSS</a></li>
+            <li><a href="/atom/{{ user }}">Atom</a></li>
+            {% if loggedIn %}
+            <li><a href="/settings">Settings</a></li>
+            <li><a href="{{ authControl }}">Log out</a></li> 
+            {% else %}    
+             <li><a href="{{ authControl }}">Login</a></li> 
+            {% endif %}
+          </ul>    
+    </nav>
     
-</nav>
-  <h2>Feed at {{ user }}</h2>
- 
-  {% for email in emails %}
-    <div class="msg">
-      <div class="msg-from">{{ email.fromAddress }}</div><div class="msg-subject">{{ email.subject }}</div><div class="msg-text">{{ email.body }}</div><div class="msg-date">{{ email.dateReceived}}</div>
-    </div>
-  {% endfor %}
+  
+    <h2>Feed at {{ user }}</h2>
+    <h3>Your email {{ to }}</h3>
+    {% if empty %}
+       <p>No Messages.</p>
+    {% else %}  
+      {% for email in emails %}
+        <div class="msg">
+          <div class="msg-from">{{ email.fromAddress }}</div><div class="msg-subject">{{ email.subject }}</div><div class="msg-text">{{ email.body }}</div><div class="msg-date">{{ email.dateReceived}}</div>
+        </div>
+      {% endfor %}   
+    {% endif %}
+    
+    
+  
+  {% else %}  
+    <p>Account doesn't exist!</p>
+  {% endif %}
+  
 {% endblock %}
+

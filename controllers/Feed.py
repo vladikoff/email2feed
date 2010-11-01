@@ -34,10 +34,17 @@ class ShowAll(webapp.RequestHandler): #Displays the user's web feed
              
         EMAIL_TO = user + config.SETTINGS['emaildomain']        
         
+        accountExists = False   
+  
         
-        existingUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
+        currentUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
+        for currentUser in currentUsers:  
+            emailName =  currentUser.emailName
+        
+        existingUsers = UserDetails.gql("WHERE emailName = :1 LIMIT 1",user) 
         for existingUser in existingUsers:  
-            emailName =  existingUser.emailName
+            accountExists = True       
+             
             
         if user == emailName: 
             loggedIn = True
@@ -48,7 +55,7 @@ class ShowAll(webapp.RequestHandler): #Displays the user's web feed
         emailCount = emails.count() 
         if emailCount == 0:
             empty = True 
-        viewdata = { 'emails':emails, 'to':EMAIL_TO, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'empty': empty}      
+        viewdata = { 'emails':emails, 'to':EMAIL_TO, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
         
         path = os.path.join(main.ROOT_DIR, 'views/u/web.html')
         self.response.out.write(template.render(path, viewdata))      
