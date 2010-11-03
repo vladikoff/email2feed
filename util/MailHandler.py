@@ -7,7 +7,7 @@ import datetime
 
 class MailHandler(InboundMailHandler):
     def receive(self, message):
-        logging.info("Received a message from: " + message.sender)
+        logging.info("Message from: " + message.sender)
         mailMessage = MailMessage()
         mailMessage.toAddress = message.to
         mailMessage.fromAddress = message.sender
