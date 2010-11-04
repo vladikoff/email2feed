@@ -18,7 +18,7 @@ class MailHandler(InboundMailHandler):
         rcpt = Recipient.gql("where toAddress=:to", to=mailMessage.toAddress).get()
         if (not rcpt):
             Recipient(toAddress=mailMessage.toAddress).put();
-        logging.warn(rcpt)
+        logging.warn(rcpt)  
     
     def _getBody(self, message):
         ret = None
