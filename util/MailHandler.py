@@ -4,7 +4,6 @@ from models.models import MailMessage, Recipient
 import logging
 import datetime
 
-
 class MailHandler(InboundMailHandler):
     def receive(self, message):
         logging.info("Message from: " + message.sender)
@@ -32,9 +31,3 @@ class MailHandler(InboundMailHandler):
         if isinstance(ret, EncodedPayload):
             ret = ret.decode()
         return ret
-            
-        
-        
-        
-
-        
