@@ -1,29 +1,23 @@
-email2feed
+**email2feed**
 
-Use CONFIG.PY to change settings!
-
+Use CONFIG.PY to change app settings!
 
 Basically the idea here is that emails go into:
     bacn@email2feed.org
 They will be accessible via ATOM or RSS2 at:
     http://email2feed.org/bacn
 
-Notes:
- * There will be no authentication. All feeds are accessible.
- * Use hosted smtp2web: http://www.smtp2web.com
- ** Maybe later moved to self-hosted
- ** Maybe later we'll have native inbound email in GAE: http://groups.google.com/group/google-appengine-python/browse_thread/thread/614d4a40af49de3a
+All feeds are accessible.
 
-2.0 potential features:
-* authentication and private feeds with megahashes 
- 
-Dev Notes:
 
-  This is version 0.1
+**Dev Notes**
+
+  This is version 0.2
   
-  TODO for v0.2:
-    * Add user config options
-    * Fix robots.txt and 404....
-    * Check RSS/Atom content types
-    * Remove /feed/ stuffs
-     
+  TODO for v0.3:
+  * Fix robots.txt and 404....
+  * Check RSS/Atom content types
+  * Trust/Blocked Email removal
+    
+2.0 potential features:  
+  * Authentication and private feeds with megahashes    
