@@ -13,45 +13,34 @@ from models.models import UserDetails, MailMessage, BlockedEmails, TrustedEmails
 class Index(webapp.RequestHandler): #User Settings
     def get(self):
         path = os.path.join(main.ROOT_DIR, 'views/settings.html')
-        trustedMode = False
+        tResult = bResult = accountExists = trustedMode = False
         user = users.get_current_user() 
-        emailName = ""
-        accountExists = False
-        tResult = bResult = False
+        emailName = "" 
         
-      
         if user: #if logged in                          
             existingUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",user) 
         
             for existingUser in existingUsers:         
                 trustedMode = existingUser.trustedMode
                 emailName = existingUser.emailName
-                accountExists = True       
-       
-            
+                accountExists = True 
+                
         if accountExists == False:
             self.redirect("/#login")
         else:
-            
-            
-            
             trustedEmails = TrustedEmails.all().filter("accountName = ", user)
             for trustedEmail in trustedEmails:
                 tResult = True  
             blockedEmails = BlockedEmails.all().filter("accountName = ", user) 
             for blockedEmail in blockedEmails:  
-                bResult = True    
-             
-            
-            
-            
-            
+                bResult = True 
+                
             viewdata = {'trustedModeCheck':trustedMode,'user':emailName, 'trustedEmails':trustedEmails, 'blockedEmails':blockedEmails, 'tResult':tResult, 'bResult':bResult}            
             self.response.out.write(template.render(path, viewdata))
             
     def post(self):
         
-        submit = self.request.get('action')
+        action = self.request.get('action')
         user = users.get_current_user() 
         emailName = ""
         
@@ -61,7 +50,7 @@ class Index(webapp.RequestHandler): #User Settings
             
         userAddress = emailName + config.SETTINGS['emaildomain'];   
         
-        if submit == "delete":
+        if action == "delete":
             qUser = db.GqlQuery("SELECT __key__ FROM UserDetails WHERE accountName = :1", user)
             resultsUser = qUser.fetch(1)
             db.delete(resultsUser)
@@ -72,8 +61,7 @@ class Index(webapp.RequestHandler): #User Settings
             db.delete(qMessages)
             self.redirect("/#deleted")
         
-        if submit == "trustmode": #Enabling Trust Only Mode
-      
+        if action == "trustmode": #Enabling Trust Only Mode      
             trustedValue = self.request.get('trusted')
             user = users.get_current_user() 
             if (trustedValue == "Enable"):
@@ -82,7 +70,7 @@ class Index(webapp.RequestHandler): #User Settings
                 trustedValueBool = False
             
             if user: #if logged in                          
-                existingUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
+                existingUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",user) 
                 for existingUser in existingUsers:         
                     existingUser.trustedMode = trustedValueBool
                     existingUser.put()          
@@ -90,26 +78,39 @@ class Index(webapp.RequestHandler): #User Settings
                 self.redirect("/#login")            
             self.redirect("/settings#post")
             
-        if submit == "block":            
+        if action == "block":            
             addedEmail = self.request.get('email')
             
             blockedEmail = BlockedEmails()     
             if users.get_current_user():
-                blockedEmail.accountName = users.get_current_user()       
+                blockedEmail.accountName = user   
            
             blockedEmail.email = addedEmail      
             blockedEmail.put()            
               
             self.redirect("/settings#block")
        
-        if submit == "trust":           
+        if action == "trust":           
             addedEmail = self.request.get('email')   
             
             trustedEmail = TrustedEmails()     
             if users.get_current_user():
-                trustedEmail.accountName = users.get_current_user()       
+                trustedEmail.accountName = user       
            
             trustedEmail.email = addedEmail      
-            trustedEmail.put()          
+            trustedEmail.put()
+            self.redirect("/settings#trusted") 
+
+        if action == "remove-trusted" or action == "remove-blocked":
+            removing = self.request.get('emails', allow_multiple=True)   
+            currentUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
+                      
+            for i in removing:                 
+                if action == "remove-trusted":
+                    emailEntry = db.GqlQuery("SELECT __key__ FROM TrustedEmails WHERE accountName = :1 AND email = :2", user, i)
+                else:
+                    emailEntry = db.GqlQuery("SELECT __key__ FROM BlockedEmails WHERE accountName = :1 AND email = :2", user, i)              
+                resultEntry = emailEntry.fetch(1)
+                db.delete(resultEntry)        
                   
-            self.redirect("/settings#trust")         
+            self.redirect("/settings#removing")         

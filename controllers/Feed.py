@@ -10,35 +10,31 @@ from urlparse import urlparse
 import datetime
 from libs import PyRSS2Gen
 import config
-
         
 class ShowAll(webapp.RequestHandler): #Displays the user's web feed
-    def get(self, user):         
-             
-        EMAIL_DOMAIN = user + config.SETTINGS['emaildomain']        
-        
-        accountExists = False   
+    def get(self, user):                    
+        USER_EMAIL = user + config.SETTINGS['emaildomain']       
+        accountExists = empty = False   
         emailName = ""
-        empty = False
+       
         currentUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
         for currentUser in currentUsers:  
             emailName =  currentUser.emailName
         
         existingUsers = UserDetails.gql("WHERE emailName = :1 LIMIT 1",user) 
         for existingUser in existingUsers:  
-            accountExists = True       
-             
+            accountExists = True
             
         if user == emailName: 
             loggedIn = True
         else:
             loggedIn = False
         
-        emails = MailMessage.all().filter("toAddress = ", EMAIL_DOMAIN).order("-dateReceived")      
+        emails = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")      
         emailCount = emails.count() 
         if emailCount == 0:
             empty = True 
-        viewdata = { 'emails':emails, 'to':EMAIL_DOMAIN, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
+        viewdata = { 'emails':emails, 'to':USER_EMAIL, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
         
         path = os.path.join(main.ROOT_DIR, 'views/u/web.html')
         self.response.out.write(template.render(path, viewdata))      
@@ -46,7 +42,7 @@ class ShowAll(webapp.RequestHandler): #Displays the user's web feed
 class ShowMessage(webapp.RequestHandler): #show message by id
     def get(self, user, messageid):    
         
-        EMAIL_DOMAIN = user + config.SETTINGS['emaildomain']        
+        USER_EMAIL = user + config.SETTINGS['emaildomain']        
         
         mId = int(messageid)
         accountExists = False   
@@ -70,7 +66,7 @@ class ShowMessage(webapp.RequestHandler): #show message by id
         if email:
             empty = False
             
-        viewdata = { 'email':email, 'to':EMAIL_DOMAIN, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
+        viewdata = { 'email':email, 'to':USER_EMAIL, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
         
         path = os.path.join(main.ROOT_DIR, 'views/u/view.html')
         self.response.out.write(template.render(path, viewdata))   
@@ -81,9 +77,9 @@ class ShowXML(webapp.RequestHandler): #Displays the RSS feed
         
         FEED_TITLE = user + " feed at " + config.SETTINGS['hostname']
         FEED_URL = "http://"+config.SETTINGS['hostname']+"/xml/"+user      
-        EMAIL_DOMAIN = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
+        USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
         
-        messages = MailMessage.all().filter("toAddress = ", EMAIL_DOMAIN).order("-dateReceived") #Get all emails for the current user     
+        messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived") #Get all emails for the current user     
         results = messages.fetch(10) #Only 10 results for now...  
         rss_items = []
         
@@ -109,9 +105,9 @@ class ShowAtom(webapp.RequestHandler):
          
         FEED_TITLE = user + " feed at " + config.SETTINGS['hostname']
         FEED_URL = "http://"+config.SETTINGS['hostname']+"/xml/"+user        
-        EMAIL_DOMAIN = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
+        USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
         
-        messages = MailMessage.all().filter("toAddress = ", EMAIL_DOMAIN).order("-dateReceived")            
+        messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")            
         results = messages.fetch(10)          
         self.response.headers['Content-Type'] = 'application/atomsvc+xml'
         self.response.out.write(template.render("views/u/atom.xml", {"results": results,"feedTitle":FEED_TITLE,"feedUrl":FEED_URL}))     
