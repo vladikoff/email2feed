@@ -1,5 +1,6 @@
 {% extends "../base.html" %}
 {% block content %}
+  view.html 
   {% if accountExists %}
     <nav>  
           <ul>
@@ -15,18 +16,17 @@
           </ul>    
     </nav>
     
-  
+
     <h2>Feed at {{ user }}</h2>
     <h3>Your email {{ to }}</h3>
     {% if empty %}
-       <p>No Messages.</p>
+       <p>Message doesn't exist.</p>
     {% else %}  
-      {% for email in emails %}
+   
         <div class="msg">
-          <div class="msg-from">{{ email.fromAddress }}</div><div class="msg-subject"><a href="/u/{{user}}/{{email.key.id}}">{{ email.subject }}</a></div><div class="msg-date">{{ email.dateReceived}}</div>
-          <a href="/u/{{user}}/{{email.key.id}}">View</a>
+          <div class="msg-from">From: {{ email.fromAddress }}</div><div class="msg-subject">Subject: {{ email.subject }}</div><div class="msg-text">{{ email.body }}</div><div class="msg-date">{{ email.dateReceived}}</div>
         </div>
-      {% endfor %}   
+    
     {% endif %}
     
     

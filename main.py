@@ -12,12 +12,11 @@ import controllers.Settings
 ROOT_DIR = os.path.dirname(__file__)
 
 application = webapp.WSGIApplication([
-                                     (r'/u/(.*)', controllers.Feed.ShowAll) #user web feed
+                                     (r'/u/(.*)/(.*)', controllers.Feed.ShowMessage) #show feed message  
+                                    ,(r'/u/(.*)', controllers.Feed.ShowAll) #user web feed                                    
                                     ,(r'/rss/(.*)', controllers.Feed.ShowXML) #user RSS feed
                                     ,(r'/atom/(.*)', controllers.Feed.ShowAtom) #user Atom Feed
-                                    ,('/',controllers.Home.Index) #Home page                                  
-                                    ,('/feed/show',controllers.Feed.Show) #Old Feed controller 1
-                                    ,('/feed/list',controllers.Feed.List) #Old Feed controller 2
+                                    ,('/',controllers.Home.Index) #Home page
                                     ,('/help', controllers.Home.Help) #Help page
                                     ,('/register', controllers.Register.Save) #Registration page
                                     ,('/settings', controllers.Settings.Index) #Settings page
