@@ -3,18 +3,16 @@
   <title>{{feedTitle}}</title>
   <subtitle>{{email}}</subtitle> 
   <link href="{{feedUrl}}" /> 
-  <updated>{{updated}}</updated>
+  <updated>{{updated|date:"Y-m-d\TH:i:s\Z"}}</updated>
   <author>
     <name>{{name}}</name>
     <email>{{email}}</email>
-  </author>
- {% for result in results %}
-  <entry>
+  </author> 
+ {% for result in results %}<entry>
     <title>{{result.subject}}</title>
     <link href="{{userlink}}/{{result.key.id}}" />
     <id>{{userlink}}/{{result.key.id}}</id>
-    <updated>{{result.dateReceived}}</updated>
+    <updated>{{ result.dateReceived|date:"Y-m-d\TH:i:s\Z" }}</updated>
     <summary>{{result.body}}</summary>
-  </entry>
- {% endfor %}
+  </entry>{% endfor %}
 </feed>

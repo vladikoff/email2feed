@@ -12,14 +12,14 @@ from models.models import UserDetails, MailMessage, BlockedEmails, TrustedEmails
 
 class Index(webapp.RequestHandler): #User Settings
     def get(self):
-        path = os.path.join(main.ROOT_DIR, 'views/settings.html')
-        tResult = bResult = accountExists = trustedMode = False
+        path = os.path.join(main.ROOT_DIR, 'views/view/settings.html')
+        tResult = bResult = accountExists = trustedMode = loggedIn = False
         user = users.get_current_user() 
         emailName = "" 
         
         if user: #if logged in                          
             existingUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",user) 
-        
+            loggedIn = True
             for existingUser in existingUsers:         
                 trustedMode = existingUser.trustedMode
                 emailName = existingUser.emailName
@@ -33,9 +33,9 @@ class Index(webapp.RequestHandler): #User Settings
                 tResult = True  
             blockedEmails = BlockedEmails.all().filter("accountName = ", user) 
             for blockedEmail in blockedEmails:  
-                bResult = True 
+                bResult = True
                 
-            viewdata = {'trustedModeCheck':trustedMode,'user':emailName, 'trustedEmails':trustedEmails, 'blockedEmails':blockedEmails, 'tResult':tResult, 'bResult':bResult}            
+            viewdata = {'loggedIn': loggedIn, 'trustedModeCheck':trustedMode,'user':emailName, 'trustedEmails':trustedEmails, 'blockedEmails':blockedEmails, 'tResult':tResult, 'bResult':bResult}            
             self.response.out.write(template.render(path, viewdata))
             
     def post(self):

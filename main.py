@@ -15,7 +15,7 @@ application = webapp.WSGIApplication([
                                       MailHandler.mapping() #Used for email post mapping 
                                     ,(r'/view/(.*)/(.*)', controllers.Feed.ShowMessage) #show feed message  
                                     ,(r'/view/(.*)', controllers.Feed.ShowAll) #user web feed                                    
-                                    ,(r'/rss/(.*)', controllers.Feed.ShowXML) #user RSS feed
+                                    ,(r'/rss/(.*)', controllers.Feed.ShowRSS) #user RSS feed
                                     ,('/',controllers.Home.Index) #Home page 
                                     ,('/help', controllers.Home.Help) #Help page
                                     ,('/register', controllers.Register.Save) #Registration page

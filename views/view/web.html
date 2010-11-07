@@ -1,21 +1,6 @@
-{% extends "../base.html" %}
+{% extends "user.html" %}
 {% block content %}
-  {% if accountExists %}
-    <nav>  
-          <ul>
-            <li><a href="/view/{{ user }}">Web</a></li> 
-            <li><a href="/rss/{{ user }}">RSS</a></li>
-            <li><a href="/{{ user }}">Atom</a></li>
-            {% if loggedIn %}
-            <li><a href="/settings">Settings</a></li>
-            <li><a href="{{ authControl }}">Log out</a></li> 
-            {% else %}    
-             <li><a href="{{ authControl }}">Login</a></li> 
-            {% endif %}
-          </ul>    
-    </nav>
-    
-  
+  {% if accountExists %} 
     <h2>Feed at {{ user }}</h2>
     <h3>Your email {{ to }}</h3>
     {% if empty %}
@@ -28,9 +13,6 @@
         </div>
       {% endfor %}   
     {% endif %}
-    
-    
-  
   {% else %}  
     <p>Account doesn't exist!</p>
   {% endif %}

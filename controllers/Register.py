@@ -11,6 +11,8 @@ import config
 import re
  
 class Save(webapp.RequestHandler):
+    def get(self):
+        self.redirect("/#")
     def post(self):
         
         USER_EXISTS = "Username Taken!"        

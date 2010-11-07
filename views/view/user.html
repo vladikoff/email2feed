@@ -1,0 +1,19 @@
+{% extends "../base.html" %}
+{% block header %}
+<nav>  
+      <ul>
+        <li><a href="/view/{{ user }}">Web</a></li> 
+        <li><a href="/rss/{{ user }}">RSS</a></li>
+        <li><a href="/{{ user }}">Atom</a></li>
+        {% if loggedIn %}
+        <li><a href="/settings">Settings</a></li>
+        <li><a href="{{ authControl }}">Log out</a></li> 
+        {% else %}    
+         <li><a href="{{ authControl }}">Login</a></li> 
+        {% endif %}
+      </ul>    
+</nav>
+{% endblock %}
+{% block content %}  
+{% endblock %}
+

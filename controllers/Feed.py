@@ -72,12 +72,13 @@ class ShowMessage(webapp.RequestHandler): #show message by id
         self.response.out.write(template.render(path, viewdata))   
            
         
-class ShowXML(webapp.RequestHandler): #Displays the RSS feed
+class ShowRSS(webapp.RequestHandler): #Displays the RSS feed
     def get(self, user):     
         
-        FEED_TITLE = user + " feed at " + config.SETTINGS['hostname']
-        FEED_URL = "http://"+config.SETTINGS['hostname']+"/xml/"+user      
-        USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
+        FEED_TITLE = user + "'s feed at " + config.SETTINGS['hostname'] + " via email2feed"
+        FEED_URL = "http://"+config.SETTINGS['hostname']+"/rss/"+user      
+        USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com
+        USER_LINK = config.SETTINGS['url'] + "/view/" + user   
         
         messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived") #Get all emails for the current user     
         results = messages.fetch(config.SETTINGS['maxfetch'])  
@@ -85,13 +86,14 @@ class ShowXML(webapp.RequestHandler): #Displays the RSS feed
         
         #Feed Message Data
         for msg in results:
-            item = PyRSS2Gen.RSSItem(title=msg.subject,description=msg.body,pubDate=msg.dateReceived,guid = PyRSS2Gen.Guid(msg.fromAddress)) #subject, body, date received, test guid
+            genlink = USER_LINK + "/" + str(msg.key().id())
+            item = PyRSS2Gen.RSSItem(title=msg.subject,description=msg.body,pubDate=msg.dateReceived,guid = PyRSS2Gen.Guid(genlink),link=genlink) #subject, body, date received, test guid
             rss_items.append(item) 
 
         #Feed Title Data
         rss = PyRSS2Gen.RSS2(title=FEED_TITLE,
                              link=FEED_URL,
-                             description="",
+                             description=USER_EMAIL,
                              lastBuildDate=datetime.datetime.now(),
                              items=rss_items
                             )
@@ -104,7 +106,7 @@ class ShowAtom(webapp.RequestHandler):
     def get(self, user):         
          
         FEED_TITLE = user + "'s feed at " + config.SETTINGS['hostname'] + " via email2feed"
-        FEED_URL = "http://"+config.SETTINGS['hostname']+"/xml/"+user        
+        FEED_URL = "http://"+config.SETTINGS['hostname']+"/"+user        
         USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
         USER_LINK = config.SETTINGS['url'] + "/view/" + user
                 
@@ -112,14 +114,14 @@ class ShowAtom(webapp.RequestHandler):
         results = messages.fetch(config.SETTINGS['maxfetch'])  
         
         latestEmailQry = MailMessage.all().order('-__key__')
-        latestMessage = latestEmailQry.fetch(1)     
-        lM =  latestMessage[0]   
+        latestMessageFtch = latestEmailQry.fetch(1)     
+        latestMessageVal =  latestMessage[0]   
                 
         viewdata = {
                      "results"      :   results
                     ,"feedTitle"    :   FEED_TITLE
                     ,"feedUrl"      :   FEED_URL
-                    ,"updated"      :   lM.dateReceived
+                    ,"updated"      :   latestMessageVal.dateReceived
                     ,"name"         :   user
                     ,"email"        :   USER_EMAIL
                     ,"userlink"     :   USER_LINK  
