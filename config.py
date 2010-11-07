@@ -16,8 +16,8 @@ MAX_USERNAME_CHAR = 25
 #Trusted Mode (If 'True' new users must add a trusted email forwarding source to use the service)
 TRUSTED_MODE = False
 #Unavailable names
-PROBITED_NAMES = ["help","settings","view","rss","register","js","css","admin","domain","support"]
-
+UNAVAILABLE_NAMES = ["help","settings","view","rss","register","js","css","admin","domain","support"]
+ 
 
 #Application host name (auto)
 if os.environ.get('HTTP_HOST'): 
@@ -37,5 +37,5 @@ SETTINGS = {
     'maxusername': MAX_USERNAME_CHAR,
     'trustedmode': TRUSTED_MODE,
     'maxfetch': MAX_FETCH,
-    'prohibtednames': PROBITED_NAMES    
+    'unavailablenames': UNAVAILABLE_NAMES    
 }

@@ -17,12 +17,13 @@ class Save(webapp.RequestHandler):
         
         USER_EXISTS = "Username Taken!"        
         
-        userExists = False;
-        emailExists = False;
+        userExists = unavailable = emailExists = False;
+       
         
         emailName = self.request.get('emailname').strip().replace('-', '').replace(' ', '') 
         emailNameLength = len(emailName)
         fullEmailName = emailName + config.SETTINGS['emaildomain']
+        unavailablenames = config.SETTINGS['unavailablenames'] 
 
    
         #Does this Google account have an account already?      
@@ -33,16 +34,20 @@ class Save(webapp.RequestHandler):
         #Is this email taken?
         existingEmails = UserDetails.gql("WHERE emailName = :1 LIMIT 1",emailName)
         for existingEmail in existingEmails:        
-            emailExists = True;                   
-      
-        
-        
+            emailExists = True;          
+   
+        for unavailablename in unavailablenames:
+            if unavailablename == emailName:
+                unavailable = True
+                        
         if Save.validateEmail(fullEmailName) == 0:
             self.redirect("/#invalidemail")
         elif userExists:
             self.redirect("/#accountexists") 
         elif emailExists:
-            self.redirect("/#emailexists")      
+            self.redirect("/#emailexists")
+        elif unavailable:
+            self.redirect("/#unavailable")            
         elif emailNameLength <= config.SETTINGS['minusername']:
             self.redirect("/#short")        
         elif emailNameLength >= config.SETTINGS['maxusername']:
