@@ -109,11 +109,11 @@ class ShowAtom(webapp.RequestHandler):
         FEED_URL = "http://"+config.SETTINGS['hostname']+"/"+user        
         USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
         USER_LINK = config.SETTINGS['url'] + "/view/" + user
-                
+        
         messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
         results = messages.fetch(config.SETTINGS['maxfetch'])  
         
-        latestEmailQry = MailMessage.all().filter("toAddress = ", USER_EMAIL).order('-__key__')
+        latestEmailQry = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
         latestMessageFtch = latestEmailQry.fetch(1)
         for latestMessage in latestMessageFtch:    
             latestMessageVal = latestMessage.dateReceived   
