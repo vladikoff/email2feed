@@ -12,11 +12,11 @@ All feeds are accessible to public.
 
 **Dev Notes**
 
-  This is version 0.3
+  This is version 0.4
   
-  TODO for v0.4:
-  * Fix robots.txt and 404....
-  
+  TODO for v0.5
+  *  Error Handlers
+
   TODO for v0.9
   * App Design (CSS, Images, etc)
     
