@@ -18,5 +18,11 @@ indexes:
 - kind: MailMessage
   properties:
   - name: toAddress
+  - name: __key__
+    direction: desc
+
+- kind: MailMessage
+  properties:
+  - name: toAddress
   - name: dateReceived
     direction: desc

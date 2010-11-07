@@ -113,15 +113,16 @@ class ShowAtom(webapp.RequestHandler):
         messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
         results = messages.fetch(config.SETTINGS['maxfetch'])  
         
-        latestEmailQry = MailMessage.all().order('-__key__')
-        latestMessageFtch = latestEmailQry.fetch(1)     
-        latestMessageVal =  latestMessage[0]   
+        latestEmailQry = MailMessage.all().filter("toAddress = ", USER_EMAIL).order('-__key__')
+        latestMessageFtch = latestEmailQry.fetch(1)
+        for latestMessage in latestMessageFtch:    
+            latestMessageVal = latestMessage.dateReceived   
                 
         viewdata = {
                      "results"      :   results
                     ,"feedTitle"    :   FEED_TITLE
                     ,"feedUrl"      :   FEED_URL
-                    ,"updated"      :   latestMessageVal.dateReceived
+                    ,"updated"      :   latestMessageVal
                     ,"name"         :   user
                     ,"email"        :   USER_EMAIL
                     ,"userlink"     :   USER_LINK  
