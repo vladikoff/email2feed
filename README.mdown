@@ -7,7 +7,7 @@ Basically the idea here is that emails go into:
 They will be accessible via ATOM or RSS2 at:
     http://email2feed.org/bacn
 
-All feeds are accessible.
+All feeds are accessible to public.
 
 
 **Dev Notes**
@@ -16,7 +16,9 @@ All feeds are accessible.
   
   TODO for v0.4:
   * Fix robots.txt and 404....
-
+  
+  TODO for v0.9
+  * App Design (CSS, Images, etc)
     
 2.0 potential features:  
   * Authentication and private feeds with megahashes    

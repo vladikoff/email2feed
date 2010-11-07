@@ -103,13 +103,26 @@ class ShowXML(webapp.RequestHandler): #Displays the RSS feed
 class ShowAtom(webapp.RequestHandler):    
     def get(self, user):         
          
-        FEED_TITLE = user + " feed at " + config.SETTINGS['hostname']
+        FEED_TITLE = user + "'s feed at " + config.SETTINGS['hostname'] + " via email2feed"
         FEED_URL = "http://"+config.SETTINGS['hostname']+"/xml/"+user        
         USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
-        
+        USER_LINK = config.SETTINGS['url'] + "/view/" + user
+                
         messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
-             
-        results = messages.fetch(config.SETTINGS['maxfetch'])          
-        self.response.headers['Content-Type'] = 'application/atom+xml'
-        self.response.out.write(template.render("views/view/atom.xml", {"results": results,"feedTitle":FEED_TITLE,"feedUrl":FEED_URL}))     
+        results = messages.fetch(config.SETTINGS['maxfetch'])  
         
+        latestEmailQry = MailMessage.all().order('-__key__')
+        latestMessage = latestEmailQry.fetch(1)     
+        lM =  latestMessage[0]   
+                
+        viewdata = {
+                     "results"      :   results
+                    ,"feedTitle"    :   FEED_TITLE
+                    ,"feedUrl"      :   FEED_URL
+                    ,"updated"      :   lM.dateReceived
+                    ,"name"         :   user
+                    ,"email"        :   USER_EMAIL
+                    ,"userlink"     :   USER_LINK  
+                    }               
+        self.response.headers['Content-Type'] = 'application/xhtml+xml'
+        self.response.out.write(template.render("views/view/atom.xml", viewdata))

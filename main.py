@@ -12,15 +12,15 @@ import controllers.Settings
 ROOT_DIR = os.path.dirname(__file__)
 
 application = webapp.WSGIApplication([
-                                     (r'/view/(.*)/(.*)', controllers.Feed.ShowMessage) #show feed message  
+                                      MailHandler.mapping() #Used for email post mapping 
+                                    ,(r'/view/(.*)/(.*)', controllers.Feed.ShowMessage) #show feed message  
                                     ,(r'/view/(.*)', controllers.Feed.ShowAll) #user web feed                                    
                                     ,(r'/rss/(.*)', controllers.Feed.ShowXML) #user RSS feed
                                     ,('/',controllers.Home.Index) #Home page 
-                                    ,(r'/(.*)', controllers.Feed.ShowAtom) #user Atom Feed                         
                                     ,('/help', controllers.Home.Help) #Help page
                                     ,('/register', controllers.Register.Save) #Registration page
-                                    ,('/settings', controllers.Settings.Index) #Settings page
-                                    ,MailHandler.mapping() #Used for email post mapping
+                                    ,('/settings', controllers.Settings.Index) #Settings page 
+                                    ,(r'/(.*)', controllers.Feed.ShowAtom) #user Atom Feed 
                                       ],
                                      debug=True)
 

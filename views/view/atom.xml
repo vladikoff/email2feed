@@ -1,17 +1,18 @@
-<?xml version="1.0" encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8" ?>
 <feed xmlns="http://www.w3.org/2005/Atom"> 
   <title>{{feedTitle}}</title>
+  <subtitle>{{email}}</subtitle> 
   <link href="{{feedUrl}}" /> 
-  <updated></updated>
+  <updated>{{updated}}</updated>
   <author>
-    <name></name>
-    <email></email>
+    <name>{{name}}</name>
+    <email>{{email}}</email>
   </author>
  {% for result in results %}
   <entry>
     <title>{{result.subject}}</title>
-    <link href="http://example.org/2003/12/13/atom03" />
-    <id></id>
+    <link href="{{userlink}}/{{result.key.id}}" />
+    <id>{{userlink}}/{{result.key.id}}</id>
     <updated>{{result.dateReceived}}</updated>
     <summary>{{result.body}}</summary>
   </entry>
