@@ -12,12 +12,11 @@ All feeds are accessible.
 
 **Dev Notes**
 
-  This is version 0.2
+  This is version 0.3
   
-  TODO for v0.3:
+  TODO for v0.4:
   * Fix robots.txt and 404....
-  * Check RSS/Atom content types
-  * Trust/Blocked Email removal
+
     
 2.0 potential features:  
   * Authentication and private feeds with megahashes    

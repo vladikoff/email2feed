@@ -36,7 +36,7 @@ class ShowAll(webapp.RequestHandler): #Displays the user's web feed
             empty = True 
         viewdata = { 'emails':emails, 'to':USER_EMAIL, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
         
-        path = os.path.join(main.ROOT_DIR, 'views/u/web.html')
+        path = os.path.join(main.ROOT_DIR, 'views/view/web.html')
         self.response.out.write(template.render(path, viewdata))      
 
 class ShowMessage(webapp.RequestHandler): #show message by id
@@ -68,7 +68,7 @@ class ShowMessage(webapp.RequestHandler): #show message by id
             
         viewdata = { 'email':email, 'to':USER_EMAIL, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
         
-        path = os.path.join(main.ROOT_DIR, 'views/u/view.html')
+        path = os.path.join(main.ROOT_DIR, 'views/view/view.html')
         self.response.out.write(template.render(path, viewdata))   
            
         
@@ -80,7 +80,7 @@ class ShowXML(webapp.RequestHandler): #Displays the RSS feed
         USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
         
         messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived") #Get all emails for the current user     
-        results = messages.fetch(10) #Only 10 results for now...  
+        results = messages.fetch(config.SETTINGS['maxfetch'])  
         rss_items = []
         
         #Feed Message Data
@@ -107,8 +107,9 @@ class ShowAtom(webapp.RequestHandler):
         FEED_URL = "http://"+config.SETTINGS['hostname']+"/xml/"+user        
         USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
         
-        messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")            
-        results = messages.fetch(10)          
-        self.response.headers['Content-Type'] = 'application/atomsvc+xml'
-        self.response.out.write(template.render("views/u/atom.xml", {"results": results,"feedTitle":FEED_TITLE,"feedUrl":FEED_URL}))     
+        messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
+             
+        results = messages.fetch(config.SETTINGS['maxfetch'])          
+        self.response.headers['Content-Type'] = 'application/atom+xml'
+        self.response.out.write(template.render("views/view/atom.xml", {"results": results,"feedTitle":FEED_TITLE,"feedUrl":FEED_URL}))     
         

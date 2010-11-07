@@ -1,16 +1,23 @@
 import os
 
-
+#Application Settings
 #Application root dir
 APP_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 #Application name (AppSpot App Id)
-APPNAME = "sendfeedemail" 
+APPNAME = "sendfeedemail"
+#Maximum RSS/Atom Fetch
+MAX_FETCH = 50
+
+#User Settings 
 #Minimum user name characters
 MIN_USERNAME_CHAR = 5
 #Maximum user name characters
 MAX_USERNAME_CHAR = 25
 #Trusted Mode (If 'True' new users must add a trusted email forwarding source to use the service)
 TRUSTED_MODE = False
+#Unavailable names
+PROBITED_NAMES = ["help","settings","view","rss","register","js","css","admin","domain","support"]
+
 
 #Application host name (auto)
 if os.environ.get('HTTP_HOST'): 
@@ -28,5 +35,7 @@ SETTINGS = {
     'emaildomain': '@'+APPNAME+'.appspotmail.com',
     'minusername': MIN_USERNAME_CHAR,
     'maxusername': MAX_USERNAME_CHAR,
-    'trustedmode': TRUSTED_MODE    
+    'trustedmode': TRUSTED_MODE,
+    'maxfetch': MAX_FETCH,
+    'prohibtednames': PROBITED_NAMES    
 }
