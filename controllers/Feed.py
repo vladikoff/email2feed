@@ -109,6 +109,7 @@ class ShowAtom(webapp.RequestHandler):
         FEED_URL = "http://"+config.SETTINGS['hostname']+"/"+user        
         USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
         USER_LINK = config.SETTINGS['url'] + "/view/" + user
+        latestMessageVal = "";
         
         messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
         results = messages.fetch(config.SETTINGS['maxfetch'])  
@@ -127,5 +128,5 @@ class ShowAtom(webapp.RequestHandler):
                     ,"email"        :   USER_EMAIL
                     ,"userlink"     :   USER_LINK  
                     }               
-        self.response.headers['Content-Type'] = 'application/xhtml+xml'
+        self.response.headers['Content-Type'] = 'application/atom+xml'
         self.response.out.write(template.render("views/view/atom.xml", viewdata))
