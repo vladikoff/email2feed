@@ -19,7 +19,7 @@ class MailHandler(InboundMailHandler):
         m = re.search("(?<=\<)(.*?)(?=\>)", to) #serching for gmail formatted emails. ex: 'user <user@example.com>'
         if m: #gmail format
             to = m.group()
-            emailName = to.split("@")       
+            emailName, emailDomain = to.split("@")       
         else: #normal email          
             emailName, emailDomain = to.split("@") 
         
@@ -63,7 +63,7 @@ class MailHandler(InboundMailHandler):
             else:
                 logging.info("Blocked an email to " + message.to)
         else: 
-            logging.info("Account does not exist " + message.to)
+            logging.info("Account does not exist " + message.to + " with an email name of " + emailName)
     
     def _getBody(self, message):
         ret = None
