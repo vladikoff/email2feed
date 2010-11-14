@@ -1,2 +1,5 @@
+#project
+.project
+.pydevproject
 #compiled python
 *.pyc
