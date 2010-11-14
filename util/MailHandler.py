@@ -8,34 +8,28 @@ import re
 
 class MailHandler(InboundMailHandler):
     def receive(self, message):
-        logging.info("Message from: " + message.sender)
-        logging.info("Message to: " + message.to)
-         
+        logging.info("Message from: " + message.sender + " to: " + message.to)
+              
         fromEmail = message.sender
         to = message.to   
-        blocked = trusted = accountExists = blockMode = False    
-        
+        blocked = trusted = accountExists = blockMode = False        
         
         m = re.search("(?<=\<)(.*?)(?=\>)", to) #serching for gmail formatted emails. ex: 'user <user@example.com>'
         if m: #gmail format
             to = m.group()
-            emailName, emailDomain = to.split("@")       
-        else: #normal email          
-            emailName, emailDomain = to.split("@") 
-        
+                              
+        emailName, emailDomain = to.split("@")        
 
         fm = re.search("(?<=\<)(.*?)(?=\>)", fromEmail) #serching for gmail formatted emails. ex: 'user <user@example.com>'
         if fm: #gmail format
-            fromEmail = fm.group()  
-            
+            fromEmail = fm.group()            
             
         existingUsers = UserDetails.gql("WHERE emailName = :1 LIMIT 1",emailName) 
         for existingUser in existingUsers:        
                 accountExists = True
                 blockMode = existingUser.trustedMode
                 accountName = existingUser.accountName
-                logging.info("Account Exists: " + str(accountName))                
-    
+                logging.info("Account Exists: " + str(accountName))    
             
         if accountExists:             
             if blockMode: #if trust only enabled
