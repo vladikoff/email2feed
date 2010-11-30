@@ -16,7 +16,7 @@ class Index(webapp.RequestHandler): #front page
             
         path = os.path.join(main.ROOT_DIR, 'views/index.html')
         user = users.get_current_user() 
-        regShow = False #hide registrations form
+        regShow = True #hide registrations form
         authName = USER_LOGIN   
         authControl = users.create_login_url("/") #dynamic link path to login or logout screens    
         accountExists = False   

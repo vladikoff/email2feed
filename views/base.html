@@ -26,11 +26,10 @@
 </head>
 
 <body>
-  <div>
+  <div id="page">
     
-    <header>
-        <h1>sendfeedemail v0.1 beta</h1> 
-      {% block header %}{% endblock %}
+    <header> 
+      {% block header %}<img src="/images/e2f_logom.png" alt="email2feed" id="logo-front" />{% endblock %}
     </header>
     
     <div id="main">
@@ -39,12 +38,14 @@
        {% endblock %} 
     </div>
 
-    <footer>
-        {% block footer %}
-        {% endblock %}
-    </footer>
+ 
   </div>
 
+   <footer>
+        {% block footer %}
+        <p><a href="/help">Help</a> | <a href="http://github.com">Developer?</a> | Web App by @person, @person, @person and other contributors.</p>
+        {% endblock %}
+    </footer>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
   

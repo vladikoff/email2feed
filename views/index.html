@@ -1,12 +1,34 @@
 {% extends "base.html" %}
 
-{% block content %}
-    <h2>Get Started Now!</h2>
-    <a href="{{ authControl }}">{{ authName }}</a>
+{% block content %}    
+  
     {% if regShow %}
-      <form action="/register" method="post"> 
-        <label for="em">Desired Email Address</label><input type="text" name="emailname" id="em" value="" /><input type="text" name="domain" disabled="disabled" value="@{{ hostname }}.appspotmail.com" />
-        <input type="submit" value="Let's do this!" />
+      <form action="/register" method="post" id="reg-form"> 
+        <label for="em"></label><input type="text" name="emailname" id="reg-name" value="" />
+        <input type="submit" id="reg-create" value="Create my feed" />
+        <p id="reg-domain">@{{ hostname }}.appspotmail.com</p>
       </form>   
-     {% endif %}  
+     {% endif %} 
+     <div id="hero">
+       <div id="how-it-works">
+         <h2>Why It Works</h2>
+         
+         <p>Because you don't need all your social network notifications clogging your inbox.</p>
+       </div>
+       
+       <div id="features">
+         <h3>Web RSS Atom</h3>
+         
+         <p></p>
+         
+         <h3>Public URL</h3>
+         
+         <p></p>
+         
+         <h3>Manage Feed Sources</h3>
+         
+         <p></p>
+         
+       </div>
+     </div>
 {% endblock %}
