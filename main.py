@@ -18,7 +18,8 @@ application = webapp.WSGIApplication([
                                     ,(r'/rss/(.*)', controllers.Feed.ShowRSS) #user RSS feed
                                     ,('/',controllers.Home.Index) #Home page 
                                     ,('/help', controllers.Home.Help) #Help page
-                                    ,('/register', controllers.Register.Save) #Registration page
+                                    ,('/confirm/(.*)', controllers.Register.Confirm) #Registration page 
+                                    ,('/register', controllers.Register.Check) #Registration page
                                     ,('/settings', controllers.Settings.Index) #Settings page 
                                     ,(r'/(.*)', controllers.Feed.ShowAtom) #user Atom Feed 
                                       ],

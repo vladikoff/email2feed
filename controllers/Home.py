@@ -28,7 +28,8 @@ class Index(webapp.RequestHandler): #front page
                 accountName =  existingUser.emailName
                 
             if accountExists: #Did this user get an email with us?
-                self.redirect("/view/"+accountName)
+                if accountName:
+                    self.redirect("/view/"+accountName)
             else:            
                 regShow = True
                 authName = USER_LOGOUT

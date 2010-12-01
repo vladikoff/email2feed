@@ -37,5 +37,5 @@ SETTINGS = {
     'maxusername': MAX_USERNAME_CHAR,
     'trustedmode': TRUSTED_MODE,
     'maxfetch': MAX_FETCH,
-    'unavailablenames': UNAVAILABLE_NAMES    
+    'unavailable_names': UNAVAILABLE_NAMES    
 }
