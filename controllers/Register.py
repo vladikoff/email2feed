@@ -73,7 +73,7 @@ class AccountValidator():
             userExists = True;
         
         #Is this email taken?
-        existingEmails = UserDetails.gql("WHERE email_name = :1 LIMIT 1",email_name)
+        existingEmails = UserDetails.gql("WHERE emailName = :1 LIMIT 1",email_name)
         for existingEmail in existingEmails:        
             emailExists = True;          
         
