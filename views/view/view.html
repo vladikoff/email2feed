@@ -4,7 +4,8 @@
     <h2>Feed at {{ user }}</h2>
     <h3>Your email {{ to }}</h3>
     {% if empty %}
-       <p>Message doesn't exist.</p>
+       <p><img src="/images/empty.png" alt="Empty" /> Empty.</p>
+       <p>Start forwarding your mail to {{feed_email}}</p>
     {% else %}  
    
         <div class="msg">
@@ -16,7 +17,7 @@
     
   
   {% else %}  
-    <p class="no-info">Account doesn't exist!</p>
+    <p class="no-info"><img src="/images/notfound.png" alt="Not Found" />Not Found.</p>   
   {% endif %}
   
 {% endblock %}

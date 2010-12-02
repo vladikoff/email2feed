@@ -29,7 +29,7 @@ class Check(webapp.RequestHandler):
             path = os.path.join(main.ROOT_DIR, 'views/register.html')           
             self.response.out.write(template.render(path,viewdata))
         else:
-            self.redirect("/#invalid" + validation['error'])     
+            self.redirect("/#invalid-" + validation['error'])     
                 
                 
         

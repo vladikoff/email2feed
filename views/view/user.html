@@ -6,7 +6,7 @@
         <li><a href="/view/{{ user }}">Web</a></li> 
         <li><a href="/rss/{{ user }}">RSS</a></li>
         <li><a href="/{{ user }}">Atom</a></li>
-        {% if loggedIn %}
+        {% if logged_in %}
         <li><a href="/settings">Settings</a></li>
         <li><a href="{{ authControl }}">Log out</a></li> 
         {% else %}    
@@ -17,4 +17,3 @@
 {% endblock %}
 {% block content %}  
 {% endblock %}
-

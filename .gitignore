@@ -3,3 +3,4 @@
 .pydevproject
 #compiled python
 *.pyc
+images/Thumbs.db

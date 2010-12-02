@@ -10,6 +10,7 @@ from urlparse import urlparse
 import datetime
 from libs import PyRSS2Gen
 import config
+from Base import App
         
 class ShowAll(webapp.RequestHandler): #Displays the user's web feed
     def get(self, user):                    
@@ -25,19 +26,19 @@ class ShowAll(webapp.RequestHandler): #Displays the user's web feed
         for existingUser in existingUsers:  
             accountExists = True
             
-        if user == emailName: 
-            loggedIn = True
-        else:
-            loggedIn = False
         
         emails = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")      
         emailCount = emails.count() 
         if emailCount == 0:
             empty = True 
-        viewdata = { 'emails':emails, 'to':USER_EMAIL, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
+        this_data = { 'emails':emails, 'to':USER_EMAIL, 'user':user, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
+                  
         
+        app = App()
+        view_data = app.data(this_data)
+                
         path = os.path.join(main.ROOT_DIR, 'views/view/web.html')
-        self.response.out.write(template.render(path, viewdata))      
+        self.response.out.write(template.render(path, view_data))      
 
 class ShowMessage(webapp.RequestHandler): #show message by id
     def get(self, user, messageid):    
@@ -119,7 +120,7 @@ class ShowAtom(webapp.RequestHandler):
         for latestMessage in latestMessageFtch:    
             latestMessageVal = latestMessage.dateReceived   
                 
-        viewdata = {
+        this_data = {
                      "results"      :   results
                     ,"feedTitle"    :   FEED_TITLE
                     ,"feedUrl"      :   FEED_URL
@@ -127,6 +128,10 @@ class ShowAtom(webapp.RequestHandler):
                     ,"name"         :   user
                     ,"email"        :   USER_EMAIL
                     ,"userlink"     :   USER_LINK  
-                    }               
+                    }     
+        app = App()
+        view_data = app.data(this_data)      
+       
+        
         self.response.headers['Content-Type'] = 'application/atom+xml'
-        self.response.out.write(template.render("views/view/atom.xml", viewdata))
+        self.response.out.write(template.render("views/view/atom.xml", view_data))

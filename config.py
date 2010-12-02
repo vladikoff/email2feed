@@ -3,6 +3,8 @@ import os
 #Application Settings
 #Application root dir
 APP_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
+#Platform Name
+PLATFORM_NAME = "email2feed"
 #Application name (AppSpot App Id)
 APPNAME = "sendfeedemail"
 #Maximum RSS/Atom Fetch
@@ -37,5 +39,6 @@ SETTINGS = {
     'maxusername': MAX_USERNAME_CHAR,
     'trustedmode': TRUSTED_MODE,
     'maxfetch': MAX_FETCH,
-    'unavailable_names': UNAVAILABLE_NAMES    
+    'unavailable_names': UNAVAILABLE_NAMES, 
+    'platform': PLATFORM_NAME
 }

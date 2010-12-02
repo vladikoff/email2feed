@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
-{% block content %}    
-  
-    {% if regShow %}
+{% block content %} 
+    
       <form action="/register" method="post" id="reg-form"> 
         <label for="em"></label><input type="text" name="email_name" id="reg-name" value="" />
         <input type="submit" id="reg-create" value="Create my feed" />
         <p id="reg-domain">@{{ hostname }}.appspotmail.com</p>
       </form>   
-     {% endif %} 
+    
      <div id="hero">
        <div id="how-it-works">
          <h2>Why It Works</h2>

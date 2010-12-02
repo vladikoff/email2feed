@@ -7,38 +7,28 @@ import main
 from models.models import UserDetails
 from urlparse import urlparse
 import config
+from Base import App
 
 class Index(webapp.RequestHandler): #front page     
-    def get(self):
-        
-        USER_LOGIN = "Login"
-        USER_LOGOUT = "Log out"
-            
+    def get(self): 
+               
+        app = App()
         path = os.path.join(main.ROOT_DIR, 'views/index.html')
-        user = users.get_current_user() 
-        regShow = True #hide registrations form
-        authName = USER_LOGIN   
+        user = users.get_current_user()       
         authControl = users.create_login_url("/") #dynamic link path to login or logout screens    
-        accountExists = False   
-             
-        if user: #if logged in
-            existingUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
-            for existingUser in existingUsers:        
-                accountExists = True
-                accountName =  existingUser.emailName
+                   
+        if user: #if logged in                    
+            
+            account = app.account_exists(users.get_current_user())
                 
-            if accountExists: #Did this user get an email with us?
-                if accountName:
-                    self.redirect("/view/"+accountName)
-            else:            
-                regShow = True
-                authName = USER_LOGOUT
-
+            if account['exists']: #Did this user get an email with us?
+                if account['account_name']:
+                    self.redirect("/view/"+account['account_name'])
+                 
+        this_data = {}        
+        view_data = app.data(this_data)        
         
-        viewdata = {'authControl':authControl, 'authName': authName, 'regShow': regShow,'hostname':config.SETTINGS['hostname']}
-        
-        self.response.out.write(template.render(path, viewdata))
-        
+        self.response.out.write(template.render(path, view_data))    
                     
 
 class Help(webapp.RequestHandler): #help and faqs page

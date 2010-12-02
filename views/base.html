@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   
-  <title>email2feed v0.3 beta</title>
+  <title>{{ base_title }}</title>
 
   <meta charset="utf-8" />
   <meta name="description" content="">
@@ -43,7 +43,7 @@
 
    <footer>
         {% block footer %}
-        <p><a href="/help">Help</a> | <a href="http://github.com">Developer?</a> | Web App by @person, @person, @person and other contributors.</p>
+        <p>{% if logged_in %}<a href="{{auth_link}}">Log Out</a>{% else %}<a href="{{auth_link}}">Login</a>{% endif %} | <a href="/help">Help</a> | <a href="http://github.com">Developer?</a> | Web App by @person, @person, @person and other contributors.</p>
         {% endblock %}
     </footer>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>

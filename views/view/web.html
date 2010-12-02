@@ -4,18 +4,16 @@
     <h2>Feed at {{ user }}</h2>
     <h3>Your email {{ to }}</h3>
     {% if empty %}
-       <p>No Messages.</p>
+       <p><img src="/images/empty.png" alt="Empty" /> Empty.</p>
+       <p>Start forwarding your mail to {{feed_email}}</p>
     {% else %}  
       {% for email in emails %}
         <div class="msg">
-          <div class="msg-from">{{ email.fromAddress }}</div><div class="msg-subject"><a href="/view/{{user}}/{{email.key.id}}">{{ email.subject }}</a></div><div class="msg-date">{{ email.dateReceived}}</div>
-          <a href="/view/{{user}}/{{email.key.id}}">View</a>
+          <div class="msg-subject"><a href="/view/{{user}}/{{email.key.id}}">{{ email.subject }}</a></div>
         </div>
       {% endfor %}   
     {% endif %}
   {% else %}  
-    <p class="no-info">Account doesn't exist!</p>
-  {% endif %}
-  
+    <p class="no-info"><img src="/images/notfound.png" alt="Not Found" />Not Found.</p>  
+  {% endif %}  
 {% endblock %}
-
