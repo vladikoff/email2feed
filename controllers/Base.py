@@ -15,12 +15,17 @@ class App():
         
         view_data['logged_in'] = False        
         view_data['base_title'] = config.SETTINGS['platform']
-        view_data['auth_link'] = users.create_login_url("/")             
+        
         view_data['hostname'] = config.SETTINGS['hostname']
+        
+        
         
         user = users.get_current_user()
         if user:  
             view_data['logged_in'] = True
+            view_data['auth_link'] = users.create_logout_url("/")
+        else:
+            view_data['auth_link'] = users.create_login_url("/")
         
         return view_data   
     
