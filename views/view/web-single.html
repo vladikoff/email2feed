@@ -1,24 +1,35 @@
 {% extends "user.html" %}
 {% block content %}
+<div id="feed">
   {% if accountExists %}
-    <h2>Feed at {{ user }}</h2>
-    <h3>Your email {{ to }}</h3>
-    {% if empty %}
-       <p><img src="/images/empty.png" alt="Empty" /> Empty.</p>
-       <p>Start forwarding your mail to {{feed_email}}</p>
-    {% else %}  
-   
-        <div class="msg">
-          <div class="msg-from">From: {{ email.fromAddress }}</div><div class="msg-subject">Subject: {{ email.subject }}</div><div class="msg-text">{{ email.body }}</div><div class="msg-date">{{ email.dateReceived}}</div>
-        </div>
-    
-    {% endif %}
-    
-    
-  
+
+        <div class="msg-single">
+          
+          <div class="f-infobar">
+            <p><span>{{ email.dateReceived}}</span><span>{{ email.fromAddress }}</span></p>           
+          </div>
+          
+          <div class="f-subject-bar">
+            <p class="f-subject">{{ email.subject }}</p>
+            
+            <div class="f-controls">              
+              <a href="/view/{{ feed_url }}">Back to feed</a>
+              <a href="">Prev</a>
+              <a href="">Next</a>             
+            </div>
+          </div>
+          
+          <div class="f-single">         
+            <div class="f-single-content">{{ email.body }}</div>          
+          </div>
+          
+        </div>  
   {% else %}  
-    <p class="no-info"><img src="/images/notfound.png" alt="Not Found" />Not Found.</p>   
+     <div class="empty-info-box not-found-box"></div>
+     <div class="empty-info not-found">
+        <p class="empty-info-msg"><img src="/images/notfound.png" alt="Not Found" />Not Found.</p>        
+     </div>    
   {% endif %}
-  
+</div>
 {% endblock %}
 
