@@ -1,0 +1,68 @@
+.f-single {
+  
+  
+}
+
+
+.f-infobar {
+  width: 100%;
+  float: left;
+  padding: 5px 0px;
+  
+}
+
+.f-subject-bar {
+  width: 100%;
+  float: left;
+  padding: 20px 0px 20px 0px;
+  
+}
+
+.f-subject {
+  width: 580px;
+  height: 31px;
+  background: #FFF;
+  float: left;
+  padding: 3px 0px 3px 11px;
+  font-weight: bold;
+  margin-right : 20px;
+  font-size: 18px;
+  
+}
+
+
+.f-single {
+  float: left;
+  width: 100%;
+  background: #fff;
+  padding: 20px 0px 40px 0px;
+  margin-bottom: 50px;  
+}
+.f-single-content {
+  margin: 0px auto;
+  width: 820px;  
+}
+
+.f-controls {
+  float: right;
+  width: 290px;
+}
+
+.f-controls a {
+  float: left; 
+  height: 24px;
+ 
+  border:0px;
+  background: #3282B3;
+  color: #FFF;
+  border-bottom: 3px solid #00486E;
+  -moz-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0px 10px;
+  padding: 10px 10px 0px 10px;
+   
+  
+  
+}

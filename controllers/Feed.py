@@ -66,11 +66,21 @@ class ShowMessage(webapp.RequestHandler): #show message by id
         email = MailMessage.get_by_id(mId)   
         if email:
             empty = False
-            
-        viewdata = { 'email':email, 'to':USER_EMAIL, 'user':user, 'loggedIn': loggedIn, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
         
-        path = os.path.join(main.ROOT_DIR, 'views/view/view.html')
-        self.response.out.write(template.render(path, viewdata))   
+        feed_url = self.request.path.split('/')[2]
+           
+        prev_url = ""
+        
+        next_url = ""
+               
+            
+        this_data = { 'email':email, 'to':USER_EMAIL, 'user':user, 'accountExists':accountExists, 'empty': empty, 'feed_url':feed_url[2], 'feed_url':feed_url, 'prev_url':prev_url}      
+        
+        app = App()
+        view_data = app.data(this_data)
+        
+        path = os.path.join(main.ROOT_DIR, 'views/view/web-single.html')
+        self.response.out.write(template.render(path, view_data))   
            
         
 class ShowRSS(webapp.RequestHandler): #Displays the RSS feed

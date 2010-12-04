@@ -15,11 +15,8 @@ class App():
         
         view_data['logged_in'] = False        
         view_data['base_title'] = config.SETTINGS['platform']
-        
-        view_data['hostname'] = config.SETTINGS['hostname']
-        
-        
-        
+        view_data['hostname'] = config.SETTINGS['hostname']       
+               
         user = users.get_current_user()
         if user:  
             view_data['logged_in'] = True

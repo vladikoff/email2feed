@@ -1,0 +1,168 @@
+.settings {
+  clear: both;
+  padding: 20px 0px;
+  
+}
+
+.settings-trust {
+  background: url("/images/settings-bar.png") no-repeat;
+  width: 957px;
+  height: 90px;
+}
+
+.trust-text {
+  float: left;
+  width: 700px;
+  margin-left: 73px;
+}
+
+.trust-text p{
+  font-weight: bold;
+  font-size: 14px;
+  color: #525252;
+}
+
+
+
+
+.trust-submit {
+  width: 150px;
+  float: left;  
+}
+
+.trust-submit-button {
+  width: 150px;
+  height: 50px; 
+ 
+  border:0px;
+  background: #3282B3;
+  color: #FFF;
+  border-bottom: 4px solid #00486E;
+  -moz-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+
+.trust-submit-button-enabled {
+  background: #00A434;
+  border-bottom-color: #006129;
+}
+
+.settings-status {
+  margin-top: 30px;
+  width: 100%;
+  float: left;
+  height: 60px;
+  
+}
+
+.settings-status h3 {
+  float: left;
+  font-size: 30px;
+}
+
+.settings-status p {
+  color: #00AE2B;
+  font-size: 25px;
+  font-weight: bold;
+  float: right;
+  padding-top: 5px;    
+}
+
+.settings-delete {
+  background: url("/images/delete-bar.png") no-repeat;
+ 
+  height: 37px;  
+  padding: 10px 0px 0px 10px;
+  
+  width: 278px;
+  position: absolute;
+  bottom: 35px;
+  right: 0px;
+  
+}
+
+.settings-delete-text {
+  float: left;
+  color: #73716D;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 3px 24px 2px 0px;
+}
+
+.delete-account-btn {
+  float: left;
+  width: 60px;
+  height: 25px; 
+  border:0px;
+  margin-top: 3px;
+  background: #3282B3;
+  color: #FFF;
+  border-bottom: 1px solid #00486E;
+  -moz-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  font-size: 11px;
+  font-weight: bold;
+  
+}
+
+
+.settings-manage ul {
+  list-style-type: none;
+  margin-left: 0.5em;
+}
+
+.settings-manage li {
+  font-weight: bold;
+  font-size: 14px;
+  color: #00486E;
+  padding: 5px 0px;
+
+  
+}
+
+.manage-remove-btn {
+  width: 83px;
+  height: 32px; 
+  margin-left: 0.5em;
+  border:0px;
+  background: #3282B3;
+  color: #FFF;
+  border-bottom: 3px solid #00486E;
+  -moz-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  font-size: 12px;
+  font-weight: bold;  
+}
+
+
+.manage-text {
+  float: left;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 2px;
+  width: 200px;
+  height: 32px;
+  border: 0px;
+  -moz-border-radius: 5px 0px 0px 5px;
+  border-radius: 5px 0px 0px 5px;
+}
+
+.manage-add-btn, .manage-block-btn {
+  float: left; 
+  height: 32px;
+ 
+  border:0px;
+  background: #3282B3;
+  color: #FFF;
+  border-bottom: 3px solid #00486E;
+  -moz-border-radius: 0px 5px 5px 0px;
+  border-radius: 0px 5px 5px 0px;
+  font-size: 15px;
+  font-weight: bold; 
+  
+}
+
+

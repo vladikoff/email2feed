@@ -1,67 +1,88 @@
 {% extends "user.html" %}
 {% block content %}
-   <h2>Settings</h2>   
-   
-      
-   <h3>Status</h3>
-   {% if trustedModeCheck %}
-      <p>Accepting emails only from trusted sources.</p> 
-   {% else %}    
-      <p>Accepting emails from all sources.</p>
-   {% endif %}
-   
-   <h3>Trust Only Mode</h3>
-   <form action="/settings" method="post">
-      <input type="hidden" name="action" value="trustmode" />     
-      <input type="submit" name="trusted" value="{% if trustedModeCheck %}Disable{% else %}Enable{% endif %}">{{trustedMode}}
-      <p>Only Accept Emails from my trusted emails above. This will block all messages, except the list that you provide.</p>
-   </form>   
-   
-  {% if trustedModeCheck %}
-     <h3>Manage Trusted Incoming Emails</h3>
-     {% if tResult %}
-      <form action="/settings" method="post">
-        <ul>
-         {% for trustedEmail in trustedEmails %}  
-          <li><input type="checkbox" name="emails" value="{{ trustedEmail.email }}" /> {{ trustedEmail.email }}</li>
-         {% endfor %}      
-        </ul>
-        <input type="hidden" name="action" value="remove-trusted" />      
-        <input type="submit" name="submit" value="Remove" />
-      </form>
+
+{% if logged_in %}   
+   <div class="settings settings-status">  
+     <h3>Status</h3>
+     {% if trustedModeCheck %}
+        <p>Accepting emails only from trusted sources.</p> 
      {% else %} 
-        <p>No Trusted Emails Added!</p>      
+        {% if bResult %}
+          <p>Accepting emails from all sources, except the blocked ones.</p>
+        {% else %} 
+          <p>Accepting emails from all sources.</p>
+        {% endif %}
      {% endif %}
-     <form action="/settings" method="post">     
-        <input type="hidden" name="action" value="trust" />     
-        <input type="text" value="" name="email" /> <input type="submit" name="trusted" value="Add Trusted Email">
-     </form>     
-  {% else %}   
-     <h3>Manage Blocked Emails</h3>
-        <form action="/settings" method="post">
-     {% if bResult %}
-       <ul>      
-         {% for blockedEmail in blockedEmails %}
-          <li><input type="checkbox" name="emails" value="{{ blockedEmail.email }}" /> {{ blockedEmail.email }}</li>
-         {% endfor %} 
-       </ul>
-       <input type="hidden" name="action" value="remove-blocked" />       
-       <input type="submit" name="submit" value="Remove" />
-        </form> 
-     {% else %}   
-        <p>Nothing is blocked!</p>
-     {% endif %}  
-  
-     <form action="/settings" method="post"> 
-        <input type="hidden" name="action" value="block" />         
-        <input type="text" value="" name="email" /> <input type="submit"  name="blocked" value="Block Email">
-     </form>
-  {% endif %}     
-  
-   <h3>Delete my Account</h3>
-   <form action="/settings" method="post">    
-     <input type="hidden" name="action" value="delete" />
-     <input type="submit" name="delete" value="Delete it!" />
-   </form>
+   </div>
    
+   <div class="settings settings-trust">   
+     <form action="/settings" method="post">
+        <div class="trust-text">
+          <h4>Trust Only Mode</h4>
+          <p>If enabled, email2feed will only accept messages from the list of emails that you provide.</p>
+        </div>
+        <div class="trust-submit">         
+          <input type="submit" class="trust-submit-button {% if trustedModeCheck %}trust-submit-button-enabled{% endif %}" name="trusted" value="{% if trustedModeCheck %}Enabled{% else %}Enable{% endif %}">{{trustedMode}}
+        </div>
+        <input type="hidden" name="action" value="trustmode" />  
+       
+     </form>   
+   </div>
+   
+  <div class="settings settings-manage">     
+    {% if trustedModeCheck %}
+    
+       <h3>Manage Trusted Sources</h3>
+       {% if tResult %}
+        <form action="/settings" method="post">
+          <ul>
+           {% for trustedEmail in trustedEmails %}  
+            <li><input type="checkbox" name="emails" value="{{ trustedEmail.email }}" /> {{ trustedEmail.email }}</li>
+           {% endfor %}      
+          </ul>
+          <input type="hidden" name="action" value="remove-trusted" />      
+          <input type="submit" name="submit" value="Remove" class="manage-remove-btn" />
+        </form>
+       {% else %} 
+          <p>No Trusted Sources Added!</p>      
+       {% endif %}
+       <form action="/settings" method="post">     
+          <input type="hidden" name="action" value="trust" />     
+          <input type="text" value="" name="email" class="manage-text" /> <input type="submit" name="trusted" value="Add Trusted Email" class="manage-add-btn" />
+       </form>     
+       
+    {% else %}
+     
+       <h3>Manage Blocked Emails</h3>
+          <form action="/settings" method="post">
+       {% if bResult %}
+         <ul>      
+           {% for blockedEmail in blockedEmails %}
+            <li><input type="checkbox" name="emails" value="{{ blockedEmail.email }}" /> {{ blockedEmail.email }}</li>
+           {% endfor %} 
+         </ul>
+         <input type="hidden" name="action" value="remove-blocked" />       
+         <input type="submit" name="submit" value="Remove" class="manage-remove-btn" />
+          </form> 
+       {% else %}   
+          <p>Nothing is blocked!</p>
+       {% endif %}  
+    
+       <form action="/settings" method="post"> 
+          <input type="hidden" name="action" value="block" />         
+          <input type="text" value="" name="email"  class="manage-text" /> <input type="submit" name="blocked" value="Block Email" class="manage-block-btn">
+       </form>
+       
+    {% endif %}        
+  </div>
+  
+    <div class="settings-delete">
+      <p class="settings-delete-text">Delete my Account</p>
+      <form action="/settings" method="post">    
+        <input type="hidden" name="action" value="delete" />
+        <input type="submit" name="delete" class="delete-account-btn" value="Delete it!" />
+      </form>
+    </div>
+{% endif %}
+
 {% endblock %}

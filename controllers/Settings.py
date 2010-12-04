@@ -4,11 +4,11 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import db
-
 import main
 import config
 from urlparse import urlparse
 from models.models import UserDetails, MailMessage, BlockedEmails, TrustedEmails
+from Base import App
 
 class Index(webapp.RequestHandler): #User Settings
     def get(self):
@@ -35,8 +35,12 @@ class Index(webapp.RequestHandler): #User Settings
             for blockedEmail in blockedEmails:  
                 bResult = True
                 
-            viewdata = {'loggedIn': loggedIn, 'trustedModeCheck':trustedMode,'user':emailName, 'trustedEmails':trustedEmails, 'blockedEmails':blockedEmails, 'tResult':tResult, 'bResult':bResult}            
-            self.response.out.write(template.render(path, viewdata))
+            this_data = {'loggedIn': loggedIn, 'trustedModeCheck':trustedMode,'user':emailName, 'trustedEmails':trustedEmails, 'blockedEmails':blockedEmails, 'tResult':tResult, 'bResult':bResult}            
+            
+            app = App()
+            view_data = app.data(this_data)
+            
+            self.response.out.write(template.render(path, view_data))
             
     def post(self):
         

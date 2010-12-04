@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %} 
-    
+<div id="main" class="front">
       <form action="/register" method="post" id="reg-form"> 
         <label for="em"></label><input type="text" name="email_name" id="reg-name" value="" />
-        <input type="submit" id="reg-create" value="Create my feed" />
+        <input type="submit" id="reg-create" value="Create my feed!" />
         <p id="reg-domain">@{{ hostname }}.appspotmail.com</p>
       </form>   
     
@@ -13,21 +13,25 @@
          <h2>Why It Works</h2>
          
          <p>Because you don't need all your social network notifications clogging your inbox.</p>
+         
+         
+         <img src="/images/why-graphic.png" alt="How It Works" />
        </div>
        
        <div id="features">
-         <h3>Web RSS Atom</h3>
+         <h3>Subscribe!</h3>
          
-         <p></p>
+         <p>Subscribe to email2feed with RSS or Atom.</p>
          
          <h3>Public URL</h3>
          
-         <p></p>
+         <p>email2feed creates a public link for your feed, so you can share it and access it without authentication!</p>
          
          <h3>Manage Feed Sources</h3>
          
-         <p></p>
+         <p>Block and select the email sources for your feed!</p>
          
        </div>
      </div>
+</div>
 {% endblock %}

@@ -1,22 +1,31 @@
 {% extends "base.html" %}
 {% block content %} 
-
-
-{% if logged and created %}
-
-    <h2>Success!</h2>    
-    <p>You can now start forwarding your email to <span id="fe">{{emailName}}@{{ hostname }}.appspotmail.com</span></p>
-    <p>Your feed is available <a href="/view/{{ emailName }}">here</a>. Don't forget to bookmark that address!</p>       
-{% endif %}
-
-{% if account_available %}
-    <h2>Account Available!</h2>
-    <p>The username you chose is available!</p>
-    <p>After you click "Create Account" you will be asked to login with your Google Account to confirm your username.<br/>email2feed does not store or use your Google account password.</p>      
-     
-    <form action="{{auth_control}}" method="post" id="reg-form"> 
-        <p>{{email_name}}@{{ hostname }}.appspotmail.com</p>
-        <input type="submit" id="reg-create" value="Create Account" />
-    </form>      
-{% endif %}
+<div id="main">
+  <div class="confirm-info-box"></div>
+  <div class="confirm-info">
+    {% if logged and created %}
+    
+        <h2>Success!</h2>    
+        <p>You can now start forwarding your email to <span id="fe">{{emailName}}@{{ hostname }}.appspotmail.com</span></p>
+        <p>Your feed is available <a href="/view/{{ emailName }}">here</a>. Don't forget to bookmark that address!</p>       
+    {% endif %}
+    
+    {% if account_available %}
+        <h2>Account Available!</h2>
+       
+        <form action="{{auth_control}}" method="post" id="confirm-form"> 
+          <p id="confirm-email">{{email_name}}@{{ hostname }}.appspotmail.com</p>
+          <input type="submit" id="reg-confirm" value="Create Account" />
+        </form>  
+        
+        <div id="confirm-inst">       
+          <p>After you click "Create Account" you'll be asked to login with your Google Account to confirm your username.<br/>email2feed does not store or use your Google account password.</p>      
+        </div>  
+         
+        
+        
+        <img src="/images/appengineauth.png" alt="Google account authentication" />
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

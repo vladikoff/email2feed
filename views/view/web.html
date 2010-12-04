@@ -1,19 +1,26 @@
 {% extends "user.html" %}
 {% block content %}
-  {% if accountExists %} 
-    <h2>Feed at {{ user }}</h2>
-    <h3>Your email {{ to }}</h3>
+<div id="feed">
+  {% if accountExists %}
     {% if empty %}
-       <p><img src="/images/empty.png" alt="Empty" /> Empty.</p>
-       <p>Start forwarding your mail to {{feed_email}}</p>
-    {% else %}  
+      <div class="empty-info-box"></div>
+      <div class="empty-info">
+        <p class="empty-info-msg"><img src="/images/empty.png" alt="Empty" class="boom-icon" />Empty.</p>
+        <p class="empty-info-text">Start forwarding your mail to <br/><strong>{{ to }}</strong></p>
+      </div>
+    {% else %}      
       {% for email in emails %}
         <div class="msg">
           <div class="msg-subject"><a href="/view/{{user}}/{{email.key.id}}">{{ email.subject }}</a></div>
         </div>
       {% endfor %}   
+       <div class="to"><h3>{{ to }}</h3></div>
     {% endif %}
   {% else %}  
-    <p class="no-info"><img src="/images/notfound.png" alt="Not Found" />Not Found.</p>  
-  {% endif %}  
+      <div class="empty-info-box not-found-box"></div>
+      <div class="empty-info not-found">
+        <p class="empty-info-msg"><img src="/images/notfound.png" alt="Not Found" />Not Found.</p>        
+      </div>   
+  {% endif %}
+</div>
 {% endblock %}
