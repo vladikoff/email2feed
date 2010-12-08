@@ -1,10 +1,20 @@
+html {
+  
+}
+
 body {
-  background: #D3D0CB;  
+  background: url("/images/bg.png");
 }
 
 html, body {height: 100%;}
 
-#page {min-height: 100%; overflow:auto; position: relative;}
+#page {
+  min-height: 100%; 
+  overflow:auto; 
+  position: relative; 
+  background: -webkit-gradient(radial, 500 0%, 10, 500 0%, 400, from(white), to(rgba(255, 255, 255, 0)));
+  background: -moz-radial-gradient(top 45deg, circle closest-corner, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));  
+}
 
 
 
@@ -81,16 +91,23 @@ header {
 }
 
 #reg-name {
-  width: 625px;
+  width: 620px;
   height: 60px;
-  padding: 0px;
+  padding: 0px 0px 0px 5px;
   margin: 0px;
   border: 0px;
   font-size: 24px;
   float: left;
+  outline: 0;   
   
+    
+  -moz-box-shadow:inset 0 0 5px #000000;
+  -webkit-box-shadow:inset 0 0 5px #000000;
+  box-shadow:inset 0 0 5px #000000;
+    
   -moz-border-radius: 10px 0px 0px 10px;
-  border-radius: 10px 0px 0px 10px;
+  border-radius: 10px 0px 0px 10px;  
+  
 }
 #reg-create {   
   width: 150px;
@@ -277,10 +294,18 @@ nav ul li {
 
 /* Table View */ 
 
+.msg-top {
+  background: url("/images/msg-tab-top.png") repeat-x;
+  padding: 10px 0px 10px 30px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
 .msg {
   width: 100%;
-  padding: 20px 20px;
-  border:1px solid #F0DDDD;
+  padding: 9px 0px 0px 0px;
+  background: url("/images/msg-tab.png") repeat-x;
+  height: 48px;
 }
 
 .msg a {
@@ -293,6 +318,13 @@ nav ul li {
   width: 100%;
   padding: 20px 0px;
   
+}
+
+.msg-subject {
+  font-weight: bold;
+  font-size: 14px;
+ 
+  padding: 10px 0px 10px 30px;
 }
 
 /* Footer */

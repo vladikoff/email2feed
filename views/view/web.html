@@ -9,6 +9,7 @@
         <p class="empty-info-text">Start forwarding your mail to <br/><strong>{{ to }}</strong></p>
       </div>
     {% else %}      
+    <div class="msg-top">Messages</div>
       {% for email in emails %}
         <div class="msg">
           <div class="msg-subject"><a href="/view/{{user}}/{{email.key.id}}">{{ email.subject }}</a></div>
