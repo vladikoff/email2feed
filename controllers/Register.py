@@ -87,7 +87,7 @@ class AccountValidator():
                         
         if AccountValidator.validateEmail(full_email_name) == 0:
             error = "1"
-            #self.redirect("/#invalidemail" + full_email_name)
+            #self.redirect("/#invalidemail")
         elif userExists:
             error = "2"
             #self.redirect("/#accountexists") 
