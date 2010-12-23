@@ -5,7 +5,7 @@
       <form action="/register" method="post" id="reg-form"> 
         <label for="em"></label><input type="text" name="email_name" id="reg-name" value="" />
         <input type="submit" id="reg-create" value="Create my feed!" />
-        <p id="reg-domain">@{{ hostname }}.appspotmail.com</p>
+        <p id="reg-domain">{{ emaildomain }}</p>
       </form>   
     
      <div id="hero">

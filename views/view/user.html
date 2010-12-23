@@ -2,11 +2,9 @@
 {% block header %}
 <a href="/" id="logo-secondary"><img src="/images/e2f_logo_mini.png" alt="email2feed" /></a>
 <nav>  
-      <ul>
-        <li><a href="/view/{{ user }}">Web</a></li> 
-        <li><a href="/rss/{{ user }}">RSS</a></li>
-        <li><a href="/{{ user }}">Atom</a></li>
+      <ul>       
         {% if logged_in %}
+        <li><a href="/view/{{ account_name }}">My Feed</a></li> 
         <li><a href="/settings">Settings</a></li>
         <li><a href="{{ auth_link }}">Log out</a></li> 
         {% else %}    

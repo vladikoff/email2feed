@@ -299,6 +299,9 @@ nav ul li {
   padding: 10px 0px 10px 30px;
   font-weight: bold;
   font-size: 14px;
+
+  -moz-border-radius: 10px 10px 0px 0px;
+  border-radius: 10px 10px 0px 0px;
 }
 
 .msg {

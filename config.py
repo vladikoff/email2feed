@@ -12,7 +12,7 @@ MAX_FETCH = 50
 
 #User Settings 
 #Minimum user name characters
-MIN_USERNAME_CHAR = 5
+MIN_USERNAME_CHAR = 4
 #Maximum user name characters
 MAX_USERNAME_CHAR = 25
 #Trusted Mode (If 'True' new users must add a trusted email forwarding source to use the service)

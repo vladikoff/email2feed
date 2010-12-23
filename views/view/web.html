@@ -1,7 +1,7 @@
 {% extends "user.html" %}
 {% block content %}
 <div id="feed">
-  {% if accountExists %}
+  {% if account_exists %}
     {% if empty %}
       <div class="empty-info-box"></div>
       <div class="empty-info">
@@ -12,7 +12,7 @@
     <div class="msg-top">Messages</div>
       {% for email in emails %}
         <div class="msg">
-          <div class="msg-subject"><a href="/view/{{user}}/{{email.key.id}}">{{ email.subject }}</a></div>
+          <div class="msg-subject"><a href="/view/{{user_get}}/{{email.key.id}}">{{ email.subject }}</a></div>
         </div>
       {% endfor %}   
        <div class="to"><h3>{{ to }}</h3></div>

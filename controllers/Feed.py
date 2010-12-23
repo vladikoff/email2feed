@@ -26,15 +26,16 @@ class ShowAll(webapp.RequestHandler): #Displays the user's web feed
         for existingUser in existingUsers:  
             accountExists = True
             
+        app = App()            
         
         emails = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")      
         emailCount = emails.count() 
         if emailCount == 0:
             empty = True 
-        this_data = { 'emails':emails, 'to':USER_EMAIL, 'user':user, 'authControl':users.create_login_url("/"), 'accountExists':accountExists, 'empty': empty}      
+        this_data = { 'emails':emails, 'to':USER_EMAIL, 'user_get':user, 'authControl':users.create_login_url("/"), 'empty': empty}      
                   
         
-        app = App()
+       
         view_data = app.data(this_data)
                 
         path = os.path.join(main.ROOT_DIR, 'views/view/web.html')
