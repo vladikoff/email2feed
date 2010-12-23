@@ -14,7 +14,7 @@
         <h2>Account Available!</h2>
        
         <form action="{{auth_control}}" method="post" id="confirm-form"> 
-          <p id="confirm-email">{{email_name}}@{{ hostname }}.appspotmail.com</p>
+          <p id="confirm-email">{{email_name}}{{ emaildomain }}</p>
           <input type="submit" id="reg-confirm" value="Create Account" />
         </form>  
         

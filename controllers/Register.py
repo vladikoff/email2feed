@@ -9,6 +9,7 @@ from models.models import UserDetails
 from google.appengine.ext import db
 import config
 import re
+from Base import App
  
 class Check(webapp.RequestHandler):
     def get(self):
@@ -23,11 +24,14 @@ class Check(webapp.RequestHandler):
         if validation['valid']:
             account_available = True
             confirm_url = "/confirm/" + validation['email_name']
-            auth_control = users.create_login_url(confirm_url)                 
+            auth_control = users.create_login_url(confirm_url)  
+                    
+            app = App()               
+            this_data = {'email_name':validation['email_name'], 'hostname':config.SETTINGS['hostname'], 'account_available':account_available, 'auth_control':auth_control}            
+            view_data = app.data(this_data)     
             
-            viewdata = {'email_name':validation['email_name'], 'hostname':config.SETTINGS['hostname'], 'account_available':account_available, 'auth_control':auth_control}            
             path = os.path.join(main.ROOT_DIR, 'views/register.html')           
-            self.response.out.write(template.render(path,viewdata))
+            self.response.out.write(template.render(path,view_data))
         else:
             self.redirect("/#invalid-" + validation['error'])     
                 
