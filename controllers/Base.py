@@ -32,8 +32,8 @@ class App():
         
         if view_data.get('user_get'):               
             view_data['account_exists'] = App.feed_exists(view_data['user_get'])
-            view_data['rss_link'] = '<link rel="alternate" type="application/rss+xml" title="" href="">'
-            view_data['atom_link'] = '<link href="atom.xml" type="application/atom+xml" rel="" title="" />'
+            view_data['rss_link'] = '<link rel="alternate" type="application/rss+xml" title="'+ view_data.get('user_get')  +' feed at email2feed" href="/rss/' + view_data.get('user_get')  + '">'
+            view_data['atom_link'] = '<link rel="alternate"  type="application/atom+xml"  title="'+ view_data.get('user_get')  +' feed at email2feed" href="/' + view_data.get('user_get')  + '">'
             
         return view_data   
     

@@ -9,13 +9,13 @@
         <p class="empty-info-text">Start forwarding your mail to <br/><strong>{{ to }}</strong></p>
       </div>
     {% else %}      
-    <div class="msg-top">Messages</div>
+    <div class="msg-top"><div class="msg-title">Messages</div> <div class="msg-rss"><a href="/{{ user_get }}">Atom</a> <a href="/rss/{{ user_get }}">RSS</a></div></div>
       {% for email in emails %}
         <div class="msg">
           <div class="msg-subject"><a href="/view/{{user_get}}/{{email.key.id}}">{{ email.subject }}</a></div>
         </div>
       {% endfor %}   
-       <div class="to"><h3>{{ to }}</h3></div>
+     <div class="msg-bot">{{ to }}</div>      
     {% endif %}
   {% else %}  
       <div class="empty-info-box not-found-box"></div>
