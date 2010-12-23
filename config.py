@@ -1,6 +1,7 @@
 import os
 
 #Application Settings
+
 #Application root dir
 APP_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 #Platform Name
@@ -20,16 +21,20 @@ TRUSTED_MODE = False
 #Unavailable names
 UNAVAILABLE_NAMES = ["help","settings","view","rss","register","js","css","admin","domain","support"]
  
+ 
+ 
+ 
+ 
+ 
+ 
 
 #Application host name (auto)
 if os.environ.get('HTTP_HOST'): 
     HOSTNAME = os.environ['HTTP_HOST']
 else:
-    HOSTNAME = os.environ['SERVER_NAME']     
+    HOSTNAME = os.environ['SERVER_NAME']    
     
-    
-    
-#Generated Application Settings, try not to change these, but use the ones above.
+#Generated Application Settings, try not to change these, but modify the ones above.
 SETTINGS = {
     'appname': APPNAME,
     'hostname': HOSTNAME, 
@@ -41,4 +46,15 @@ SETTINGS = {
     'maxfetch': MAX_FETCH,
     'unavailable_names': UNAVAILABLE_NAMES, 
     'platform': PLATFORM_NAME
+}
+
+
+#Error Codes
+ERRORS = {
+          '1': "Invalid Email",
+          '2': "Account Exists",
+          '3': "Email Exists",
+          '4': "Email Unavailable",
+          '5': "Email Too Short",
+          "6": "Email Too Long"         
 }

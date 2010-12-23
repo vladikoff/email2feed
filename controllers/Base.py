@@ -50,10 +50,20 @@ class App():
         return account
     
     @staticmethod   
-    def feed_exists(feed_name): 
+    def feed_exists(feed_name):
         exists = False    
         existing_feeds = UserDetails.gql("WHERE emailName = :1 LIMIT 1",feed_name) 
         for existing_feed in existing_feeds:                     
             exists = True       
                
         return exists
+    
+    
+    def app_errors(self, error_codes):
+        
+        error_output = {}
+        
+        
+        return error_output
+        
+        

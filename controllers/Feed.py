@@ -87,7 +87,7 @@ class ShowMessage(webapp.RequestHandler): #show message by id
 class ShowRSS(webapp.RequestHandler): #Displays the RSS feed
     def get(self, user):     
         
-        FEED_TITLE = user + "'s feed at " + config.SETTINGS['hostname'] + " via email2feed"
+        FEED_TITLE = user + " - email2feed"
         FEED_URL = "http://"+config.SETTINGS['hostname']+"/rss/"+user      
         USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com
         USER_LINK = config.SETTINGS['url'] + "/view/" + user   
@@ -117,7 +117,7 @@ class ShowRSS(webapp.RequestHandler): #Displays the RSS feed
 class ShowAtom(webapp.RequestHandler):    
     def get(self, user):         
          
-        FEED_TITLE = user + "'s feed at " + config.SETTINGS['hostname'] + " via email2feed"
+        FEED_TITLE = user + " - email2feed"
         FEED_URL = "http://"+config.SETTINGS['hostname']+"/"+user        
         USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
         USER_LINK = config.SETTINGS['url'] + "/view/" + user
