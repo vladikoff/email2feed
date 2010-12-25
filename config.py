@@ -11,7 +11,8 @@ APPNAME = "sendfeedemail"
 #Maximum RSS/Atom Fetch
 MAX_FETCH = 50
 
-#User Settings 
+#User Settings
+
 #Minimum user name characters
 MIN_USERNAME_CHAR = 4
 #Maximum user name characters
@@ -47,7 +48,6 @@ SETTINGS = {
     'unavailable_names': UNAVAILABLE_NAMES, 
     'platform': PLATFORM_NAME
 }
-
 
 #Error Codes
 ERRORS = {
