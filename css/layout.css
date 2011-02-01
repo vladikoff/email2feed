@@ -34,6 +34,7 @@ header {
   position: relative;
   float: left;
   width: 100%;
+  margin: 10px 0px 0px 0px;
 }
 
 #page {
@@ -232,7 +233,7 @@ nav ul li a {
 .empty-info-box {
   position: absolute;
   width: 957px;
-  height: 350px;
+  height: 400px;
   text-align: center; 
   background: #FFFFFF;      
   opacity: .30; 
@@ -244,6 +245,11 @@ nav ul li a {
 
 .not-found-box {
   height: 250px;  
+}
+
+.feedurl {
+  font-weight: bold;
+  font-size: 15px;
 }
 
 .not-found {

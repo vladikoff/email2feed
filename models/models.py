@@ -12,6 +12,7 @@ class MailMessage(db.Model):
 class UserDetails(db.Model):
     accountName = db.UserProperty() 
     emailName = db.StringProperty(multiline=False)
+    feedUrl = db.StringProperty(multiline=False)
     date = db.DateTimeProperty(auto_now_add=True)    
     trustedMode = db.BooleanProperty(default=config.SETTINGS['trustedmode'])
     

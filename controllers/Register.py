@@ -1,24 +1,19 @@
-import os
-import sys
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
-import main
 from urlparse import urlparse
 from models.models import UserDetails
 from google.appengine.ext import db
-import config
-import re
+import os, sys, main, config, re, math, time, random, logging, datetime
 from Base import App
  
 class Check(webapp.RequestHandler):
     def get(self):
         self.redirect("/#")
     def post(self):        
-        
-        user = users.get_current_user()
-        action = self.request.get('action')           
-           
+             
+    
+        confirm_username = self.request.get('email_name')
         validator = AccountValidator()
         validation = validator.validate(self.request.get('email_name'))
         if validation['valid']:
@@ -26,8 +21,29 @@ class Check(webapp.RequestHandler):
             confirm_url = "/confirm/" + validation['email_name']
             auth_control = users.create_login_url(confirm_url)  
                     
+                    
+                 
+            feed_urls = Check.generate_box(validation['email_name'])       
+            feed_url = feed_urls['feed']
+            feed_view = feed_urls['view']
+            feed_gen = feed_urls['gen']
+                    
+            validator = AccountValidator() 
+            validation = validator.validate(confirm_username)       
+            if validation['valid']:  
+                userDetails = UserDetails()                
+                userDetails.emailName = validation['email_name']
+                userDetails.feedUrl = feed_gen     
+                userDetails.put()
+                
+                self.redirect("/view/" + feed_gen)
+            else:
+                self.redirect("/#invalid" + validation['error'] + " " + confirm_username)            
+                    
+                    
+                    
             app = App()               
-            this_data = {'email_name':validation['email_name'], 'hostname':config.SETTINGS['hostname'], 'account_available':account_available, 'auth_control':auth_control}            
+            this_data = {'email_name':validation['email_name'], 'hostname':config.SETTINGS['hostname'], 'account_available':account_available, 'auth_control':auth_control, 'feed_url':feed_url, 'feed_view':feed_view}            
             view_data = app.data(this_data)     
             
             path = os.path.join(main.ROOT_DIR, 'views/register.html')           
@@ -36,27 +52,33 @@ class Check(webapp.RequestHandler):
             self.redirect("/#invalid-" + validation['error'])     
                 
                 
-        
-class Confirm(webapp.RequestHandler):
-    def get(self, confirm_username):
-        
-        user = users.get_current_user()
-        if user:  
-            validator = AccountValidator() 
-            validation = validator.validate(confirm_username)       
-            if validation['valid']:  
-                userDetails = UserDetails()          
-                userDetails.accountName = user           
-                userDetails.emailName = validation['email_name']      
-                userDetails.put()
                 
-                self.redirect("/view/" + str(validation['email_name']))
-            else:
-                self.redirect("/#invalid" + validation['error'])     
-                          
-        else:              
-            self.redirect("/#confirmfail")
-            
+                
+                
+    @staticmethod
+    def generate_box(email_name):
+      
+        length = config.SETTINGS['feed_url_length'];
+        c = ("b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "v", "w", "x", "y", "z")
+        v = ("a", "e", "i", "o", "u")
+        generated_url = email_name + "-"
+        i = 0
+        max = length / 2
+
+        while i < max:
+            if i % 5:
+                generated_url += "-"
+            generated_url += c[random.randint(0, 18)]
+            generated_url += v[random.randint(0, 4)]
+            i = i + 1
+                
+        feed_urls = {}
+        feed_urls['gen'] = generated_url
+        feed_urls['view'] = config.SETTINGS['url'] + "/view/" + generated_url
+        feed_urls['feed'] = config.SETTINGS['url'] + "/" + generated_url       
+        return feed_urls
+
+
             
             
 class AccountValidator():
@@ -68,13 +90,9 @@ class AccountValidator():
         email_name_length = len(email_name)
         valid = False
         full_email_name = email_name + config.SETTINGS['emaildomain']
-        unavailable_names = config.SETTINGS['unavailable_names'] 
+        unavailable_names = config.SETTINGS['unavailable_names']   
         
-        
-        #Does this Google account have an account already?      
-        existingUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user())
-        for existingUser in existingUsers:        
-            userExists = True;
+    
         
         #Is this email taken?
         existingEmails = UserDetails.gql("WHERE emailName = :1 LIMIT 1",email_name)

@@ -7,7 +7,6 @@ import controllers.Misc
 import controllers.Feed
 import controllers.Home
 import controllers.Register
-import controllers.Settings
 
 ROOT_DIR = os.path.dirname(__file__)
 
@@ -17,10 +16,8 @@ application = webapp.WSGIApplication([
                                     ,(r'/view/(.*)', controllers.Feed.ShowAll) #user web feed                                    
                                     ,(r'/rss/(.*)', controllers.Feed.ShowRSS) #user RSS feed
                                     ,('/',controllers.Home.Index) #Home page 
-                                    ,('/help', controllers.Home.Help) #Help page
-                                    ,('/confirm/(.*)', controllers.Register.Confirm) #Registration page 
-                                    ,('/register', controllers.Register.Check) #Registration page
-                                    ,('/settings', controllers.Settings.Index) #Settings page 
+                                    ,('/help', controllers.Home.Help) #Help page                                    
+                                    ,('/register', controllers.Register.Check) #Registration page                                  
                                     ,(r'/(.*)', controllers.Feed.ShowAtom) #user Atom Feed 
                                       ],
                                      debug=True)

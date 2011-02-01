@@ -13,26 +13,27 @@ import config
 from Base import App
         
 class ShowAll(webapp.RequestHandler): #Displays the user's web feed
-    def get(self, user):                    
-        USER_EMAIL = user + config.SETTINGS['emaildomain']       
-        accountExists = empty = False   
+    def get(self, feed_url):                    
+       
+        account_exists = empty = False   
         emailName = ""
        
-        currentUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
-        for currentUser in currentUsers:  
-            emailName =  currentUser.emailName
         
-        existingUsers = UserDetails.gql("WHERE emailName = :1 LIMIT 1",user) 
-        for existingUser in existingUsers:  
-            accountExists = True
-            
+        existingUsers = UserDetails.gql("WHERE feedUrl = :1 LIMIT 1",feed_url) 
+        for existingUser in existingUsers:
+            email_name = existingUser.emailName
+            account_exists = True
+        feed_path = feed_url      
+        feed_url = config.SETTINGS['url'] +"/"+ feed_url
+         
+        user_email = email_name + config.SETTINGS['emaildomain']           
         app = App()            
         
-        emails = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")      
+        emails = MailMessage.all().filter("toAddress = ", user_email).order("-dateReceived")      
         emailCount = emails.count() 
         if emailCount == 0:
             empty = True 
-        this_data = { 'emails':emails, 'to':USER_EMAIL, 'user_get':user, 'authControl':users.create_login_url("/"), 'empty': empty}      
+        this_data = { 'emails':emails, 'to':user_email,  'authControl':users.create_login_url("/"), 'empty': empty, 'feed_url':feed_url, 'feed_path':feed_path, 'account_exists':account_exists}      
                   
         
        
@@ -42,28 +43,20 @@ class ShowAll(webapp.RequestHandler): #Displays the user's web feed
         self.response.out.write(template.render(path, view_data))      
 
 class ShowMessage(webapp.RequestHandler): #show message by id
-    def get(self, user, messageid):    
+    def get(self, feed_url, messageid):    
         
-        USER_EMAIL = user + config.SETTINGS['emaildomain']        
+         
+        existingUsers = UserDetails.gql("WHERE feedUrl = :1 LIMIT 1",feed_url) 
+        for existingUser in existingUsers:
+            email_name = existingUser.emailName
+            account_exists = True
+        USER_EMAIL = email_name + config.SETTINGS['emaildomain']       
         
         mId = int(messageid)
         accountExists = False   
         emailName = ""
         empty = True
-        currentUsers = UserDetails.gql("WHERE accountName = :1 LIMIT 1",users.get_current_user()) 
-        for currentUser in currentUsers:  
-            emailName =  currentUser.emailName
-        
-        existingUsers = UserDetails.gql("WHERE emailName = :1 LIMIT 1",user) 
-        for existingUser in existingUsers:  
-            accountExists = True       
-             
-            
-        if user == emailName: 
-            loggedIn = True
-        else:
-            loggedIn = False
-        
+                
         email = MailMessage.get_by_id(mId)   
         if email:
             empty = False
@@ -75,7 +68,7 @@ class ShowMessage(webapp.RequestHandler): #show message by id
         next_url = ""
                
             
-        this_data = { 'email':email, 'to':USER_EMAIL, 'user':user, 'accountExists':accountExists, 'empty': empty, 'feed_url':feed_url[2], 'feed_url':feed_url, 'prev_url':prev_url}      
+        this_data = { 'email':email, 'to':USER_EMAIL, 'user':email_name, 'account_exists':account_exists, 'empty': empty, 'feed_url':feed_url[2], 'feed_url':feed_url, 'prev_url':prev_url}      
         
         app = App()
         view_data = app.data(this_data)
@@ -85,64 +78,80 @@ class ShowMessage(webapp.RequestHandler): #show message by id
            
         
 class ShowRSS(webapp.RequestHandler): #Displays the RSS feed
-    def get(self, user):     
-        
-        FEED_TITLE = user + " - email2feed"
-        FEED_URL = "http://"+config.SETTINGS['hostname']+"/rss/"+user      
-        USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com
-        USER_LINK = config.SETTINGS['url'] + "/view/" + user   
-        
-        messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived") #Get all emails for the current user     
-        results = messages.fetch(config.SETTINGS['maxfetch'])  
-        rss_items = []
-        
-        #Feed Message Data
-        for msg in results:
-            genlink = USER_LINK + "/" + str(msg.key().id())
-            item = PyRSS2Gen.RSSItem(title=msg.subject,description=msg.body,pubDate=msg.dateReceived,guid = PyRSS2Gen.Guid(genlink),link=genlink) #subject, body, date received, test guid
-            rss_items.append(item) 
-
-        #Feed Title Data
-        rss = PyRSS2Gen.RSS2(title=FEED_TITLE,
-                             link=FEED_URL,
-                             description=USER_EMAIL,
-                             lastBuildDate=datetime.datetime.now(),
-                             items=rss_items
-                            )
-        
-        rss_xml = rss.to_xml()
-        self.response.headers['Content-Type'] = 'application/rss+xml'
-        self.response.out.write(rss_xml)
+    def get(self, feed_url):     
+        account_exists = False
+        existingUsers = UserDetails.gql("WHERE feedUrl = :1 LIMIT 1",feed_url) 
+        for existingUser in existingUsers:
+            email_name = existingUser.emailName
+            account_exists = True
+            
+        if account_exists:
+            FEED_TITLE = email_name + " - email2feed"
+            FEED_URL = "http://"+config.SETTINGS['hostname']+"/rss/"+feed_url      
+            USER_EMAIL = email_name + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com
+            USER_LINK = config.SETTINGS['url'] + "/view/" + feed_url   
+            
+            messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived") #Get all emails for the current user     
+            results = messages.fetch(config.SETTINGS['maxfetch'])  
+            rss_items = []
+            
+            #Feed Message Data
+            for msg in results:
+                genlink = USER_LINK + "/" + str(msg.key().id())
+                item = PyRSS2Gen.RSSItem(title=msg.subject,description=msg.body,pubDate=msg.dateReceived,guid = PyRSS2Gen.Guid(genlink),link=genlink) #subject, body, date received, test guid
+                rss_items.append(item) 
+    
+            #Feed Title Data
+            rss = PyRSS2Gen.RSS2(title=FEED_TITLE,
+                                 link=FEED_URL,
+                                 description=USER_EMAIL,
+                                 lastBuildDate=datetime.datetime.now(),
+                                 items=rss_items
+                                )
+            
+            rss_xml = rss.to_xml()
+            self.response.headers['Content-Type'] = 'application/rss+xml'
+            self.response.out.write(rss_xml)
+        else:
+            self.redirect("/#")
         
 class ShowAtom(webapp.RequestHandler):    
-    def get(self, user):         
-         
-        FEED_TITLE = user + " - email2feed"
-        FEED_URL = "http://"+config.SETTINGS['hostname']+"/"+user        
-        USER_EMAIL = user + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
-        USER_LINK = config.SETTINGS['url'] + "/view/" + user
-        latestMessageVal = "";
+    def get(self, feed_url): 
+        account_exists = False
+        existingUsers = UserDetails.gql("WHERE feedUrl = :1 LIMIT 1",feed_url) 
+        for existingUser in existingUsers:
+            email_name = existingUser.emailName
+            account_exists = True
         
-        messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
-        results = messages.fetch(config.SETTINGS['maxfetch'])  
-        
-        latestEmailQry = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
-        latestMessageFtch = latestEmailQry.fetch(1)
-        for latestMessage in latestMessageFtch:    
-            latestMessageVal = latestMessage.dateReceived   
-                
-        this_data = {
-                     "results"      :   results
-                    ,"feedTitle"    :   FEED_TITLE
-                    ,"feedUrl"      :   FEED_URL
-                    ,"updated"      :   latestMessageVal
-                    ,"name"         :   user
-                    ,"email"        :   USER_EMAIL
-                    ,"userlink"     :   USER_LINK  
-                    }     
-        app = App()
-        view_data = app.data(this_data)      
-       
-        
-        self.response.headers['Content-Type'] = 'application/atom+xml'
-        self.response.out.write(template.render("views/view/atom.xml", view_data))
+        if account_exists:
+            FEED_TITLE = email_name + " - email2feed"
+            FEED_URL = "http://"+config.SETTINGS['hostname']+"/"+feed_url        
+            USER_EMAIL = email_name + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
+            USER_LINK = config.SETTINGS['url'] + "/view/" + feed_url
+            latestMessageVal = "";
+            
+            messages = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
+            results = messages.fetch(config.SETTINGS['maxfetch'])  
+            
+            latestEmailQry = MailMessage.all().filter("toAddress = ", USER_EMAIL).order("-dateReceived")
+            latestMessageFtch = latestEmailQry.fetch(1)
+            for latestMessage in latestMessageFtch:    
+                latestMessageVal = latestMessage.dateReceived   
+                    
+            this_data = {
+                         "results"      :   results
+                        ,"feedTitle"    :   FEED_TITLE
+                        ,"feedUrl"      :   FEED_URL
+                        ,"updated"      :   latestMessageVal
+                        ,"name"         :   email_name
+                        ,"email"        :   USER_EMAIL
+                        ,"userlink"     :   USER_LINK  
+                        }     
+            app = App()
+            view_data = app.data(this_data)      
+           
+            
+            self.response.headers['Content-Type'] = 'application/atom+xml'
+            self.response.out.write(template.render("views/view/atom.xml", view_data))
+        else:
+            self.redirect("/#")

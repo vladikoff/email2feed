@@ -13,18 +13,12 @@
     {% if account_available %}
         <h2>Account Available!</h2>
        
-        <form action="{{auth_control}}" method="post" id="confirm-form"> 
-          <p id="confirm-email">{{email_name}}{{ emaildomain }}</p>
-          <input type="submit" id="reg-confirm" value="Create Account" />
-        </form>  
+        <h3>Forward Your Feed Emails To:</h3>
+        <p id="confirm-email">{{email_name}}{{ emaildomain }}</p>
         
-        <div id="confirm-inst">       
-          <p>After you click "Create Account" you'll be asked to login with your Google Account to confirm your username.<br/>email2feed does not store or use your Google account password.</p>      
-        </div>  
-         
-        
-        
-        <img src="/images/appengineauth.png" alt="Google account authentication" />
+        <h3>Your Feed:</h3>
+        <p id="confirm-email"><a href="{{feed_url}}" rel="external">{{feed_url}}</a></p>    
+        <p><a href="{{feed_view}}">View Account</a></p>
     {% endif %}
   </div>
 </div>

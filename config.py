@@ -21,7 +21,9 @@ MAX_USERNAME_CHAR = 25
 TRUSTED_MODE = False
 #Unavailable names
 UNAVAILABLE_NAMES = ["help","settings","view","rss","register","js","css","admin","domain","support"]
- 
+  
+#Feed URL Length
+URL_LENGTH = 44
  
  
  
@@ -46,7 +48,8 @@ SETTINGS = {
     'trustedmode': TRUSTED_MODE,
     'maxfetch': MAX_FETCH,
     'unavailable_names': UNAVAILABLE_NAMES, 
-    'platform': PLATFORM_NAME
+    'platform': PLATFORM_NAME,
+    'feed_url_length':URL_LENGTH
 }
 
 #Error Codes
@@ -56,5 +59,5 @@ ERRORS = {
           '3': "Email Exists",
           '4': "Email Unavailable",
           '5': "Email Too Short",
-          "6": "Email Too Long"         
+          "6": "Email Too Long"       
 }

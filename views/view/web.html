@@ -7,12 +7,13 @@
       <div class="empty-info">
         <p class="empty-info-msg"><img src="/images/empty.png" alt="Empty" class="boom-icon" />Empty.</p>
         <p class="empty-info-text">Start forwarding your mail to <br/><strong>{{ to }}</strong></p>
+        <p class="empty-info-text">Add this feed to your RSS reader<br/><span class="feedurl">{{ feed_url }}</span></p>
       </div>
     {% else %}      
-    <div class="msg-top"><div class="msg-title">Messages</div> <div class="msg-rss"><a href="/{{ user_get }}">Atom</a> <a href="/rss/{{ user_get }}">RSS</a></div></div>
+    <div class="msg-top"><div class="msg-title">Messages</div> <div class="msg-rss"><a href="/{{ feed_path }}">Atom</a> <a href="/rss/{{ feed_path }}">RSS</a></div></div>
       {% for email in emails %}
         <div class="msg">
-          <div class="msg-subject"><a href="/view/{{user_get}}/{{email.key.id}}">{{ email.subject }}</a></div>
+          <div class="msg-subject"><a href="/view/{{feed_path}}/{{email.key.id}}">{{ email.subject }}</a></div>
         </div>
       {% endfor %}   
      <div class="msg-bot">{{ to }}</div>      
@@ -24,4 +25,6 @@
       </div>   
   {% endif %}
 </div>
+
+
 {% endblock %}

@@ -1,20 +1,7 @@
 {% extends "../base.html" %}
 {% block header %}
 <a href="/" id="logo-secondary"><img src="/images/e2f_logo_mini.png" alt="email2feed" /></a>
-<nav>  
-      <ul>       
-        {% if logged_in %}
-          <li><a href="/view/{{ account_name }}">My Feed</a></li> 
-          <li><a href="/settings">Settings</a></li>
-          <li><a href="{{ auth_link }}">Log out</a></li> 
-        {% else %}    
-          <li><a href="{{ auth_link }}">Login</a></li>
-          <li><a href="/">Create Account</a></li>  
-        {% endif %}
-      </ul>    
-</nav>
 {% endblock %}
-
 {% block content %}
 {% endblock %}
 
