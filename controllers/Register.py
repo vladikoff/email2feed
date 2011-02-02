@@ -10,8 +10,7 @@ from Base import App
 class Check(webapp.RequestHandler):
     def get(self):
         self.redirect("/#")
-    def post(self):        
-             
+    def post(self):               
     
         confirm_username = self.request.get('email_name')
         validator = AccountValidator()
@@ -20,9 +19,7 @@ class Check(webapp.RequestHandler):
             account_available = True
             confirm_url = "/confirm/" + validation['email_name']
             auth_control = users.create_login_url(confirm_url)  
-                    
-                    
-                 
+            
             feed_urls = Check.generate_box(validation['email_name'])       
             feed_url = feed_urls['feed']
             feed_view = feed_urls['view']
@@ -52,21 +49,18 @@ class Check(webapp.RequestHandler):
             self.redirect("/#invalid-" + validation['error'])     
                 
                 
-                
-                
-                
     @staticmethod
     def generate_box(email_name):
       
         length = config.SETTINGS['feed_url_length'];
         c = ("b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "v", "w", "x", "y", "z")
         v = ("a", "e", "i", "o", "u")
-        generated_url = email_name + "-"
+        generated_url = email_name
         i = 0
         max = length / 2
 
         while i < max:
-            if i % 5:
+            if (i % 5) == 0:
                 generated_url += "-"
             generated_url += c[random.randint(0, 18)]
             generated_url += v[random.randint(0, 4)]
