@@ -7,7 +7,7 @@ APP_ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 #Platform Name
 PLATFORM_NAME = "email2feed"
 #Application name (AppSpot App Id)
-APPNAME = "sendfeedemail"
+APPNAME = os.environ['APPLICATION_ID']
 #Maximum RSS/Atom Fetch
 MAX_FETCH = 50
 
@@ -54,10 +54,10 @@ SETTINGS = {
 
 #Error Codes
 ERRORS = {
-          '1': "Invalid Email",
-          '2': "Account Exists",
-          '3': "Email Exists",
-          '4': "Email Unavailable",
-          '5': "Email Too Short",
-          "6": "Email Too Long"       
+          1: "This name is invalid for an email.",
+          2: "Sorry, this name is already taken.",
+          3: "This name is already taken.",
+          4: "This email is unavailable.",
+          5: "The name you chose is too short. It needs to be between " + str(MIN_USERNAME_CHAR) + " and  " +  str(MAX_USERNAME_CHAR) + " characters.",
+          6: "The name you chose is too long. It needs to be between " +  str(MIN_USERNAME_CHAR) + " and  " +  str(MAX_USERNAME_CHAR) + " characters."      
 }

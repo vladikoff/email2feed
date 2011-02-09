@@ -2,33 +2,41 @@
 
 {% block content %} 
 <div id="main" class="front">
-      <form action="/register" method="post" id="reg-form"> 
-        <label for="em"></label><input type="text" name="email_name" id="reg-name" value="" />
+	
+	{% if errors %}
+	<div id="errors">
+		{% for error in errors %}	
+			{{error}}
+		{% endfor %}
+	</div>
+	{% endif %}
+    <form action="/register" method="post" id="reg-form">
+        <label for="em">
+        </label>
+        <input type="text" name="email_name" id="reg-name" value="" />
         <input type="submit" id="reg-create" value="Create my feed!" />
-        <p id="reg-domain">{{ emaildomain }}</p>
-      </form>   
-    
-     <div id="hero">
-       <div id="how-it-works">
-         <h2>Why It Works</h2>
-         
-         <p>Because you don't need all your social network notifications clogging your inbox.</p>
-         
-         
-         <img src="/images/why-graphic.png" alt="How It Works" />
-       </div>
-       
-       <div id="features">
-         <h3>Subscribe!</h3>
-         
-         <p>Subscribe to email2feed with RSS or Atom.</p>
-         
-         <h3>Public URL</h3>
-         
-         <p>email2feed creates a public link for your feed, so you can share it and access it without authentication!</p>
-         
-    
-       </div>
-     </div>
+        <p id="reg-domain">
+            {{ emaildomain }}
+        </p>
+    </form>
+    <div id="hero">
+        <div id="how-it-works">
+            <h2>Why It Works</h2>
+            <p>
+                Because you don't need all your social network notifications clogging your inbox.
+            </p>
+            <img src="/images/why-graphic.png" alt="How It Works" />
+        </div>
+        <div id="features">
+            <h3>Subscribe!</h3>
+            <p>
+                Subscribe to email2feed with RSS or Atom.
+            </p>
+            <h3>Public URL</h3>
+            <p>
+                email2feed creates a public link for your feed, so you can share it and access it without authentication!
+            </p>
+        </div>
+    </div>
 </div>
 {% endblock %}

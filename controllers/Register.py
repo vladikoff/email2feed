@@ -11,7 +11,7 @@ class Check(webapp.RequestHandler):
     def get(self):
         self.redirect("/#")
     def post(self):               
-    
+        app = App() 
         confirm_username = self.request.get('email_name')
         validator = AccountValidator()
         validation = validator.validate(self.request.get('email_name'))
@@ -35,18 +35,29 @@ class Check(webapp.RequestHandler):
                 
                 self.redirect("/view/" + feed_gen)
             else:
-                self.redirect("/#invalid" + validation['error'] + " " + confirm_username)            
+                self.redirect("/#invalid" + validation['errors'] + " " + confirm_username)            
                     
                     
                     
-            app = App()               
-            this_data = {'email_name':validation['email_name'], 'hostname':config.SETTINGS['hostname'], 'account_available':account_available, 'auth_control':auth_control, 'feed_url':feed_url, 'feed_view':feed_view}            
+                          
+            this_data = {
+                         'email_name':validation['email_name'], 
+                         'hostname':config.SETTINGS['hostname'], 
+                         'account_available':account_available,
+                         'auth_control':auth_control, 
+                         'feed_url':feed_url,
+                         'feed_view':feed_view                       
+                         }            
             view_data = app.data(this_data)     
             
             path = os.path.join(main.ROOT_DIR, 'views/register.html')           
             self.response.out.write(template.render(path,view_data))
         else:
-            self.redirect("/#invalid-" + validation['error'])     
+            path = os.path.join(main.ROOT_DIR, 'views/index.html')
+            this_data = {'errors':validation['errors']}        
+            view_data = app.data(this_data)            
+            self.response.out.write(template.render(path, view_data))             
+            #self.redirect("/#invalid-" + str(validation['errors']))     
                 
                 
     @staticmethod
@@ -78,8 +89,9 @@ class Check(webapp.RequestHandler):
 class AccountValidator():
     def validate(self,email_name):       
         
-        error = "0"
-        userExists = unavailable = emailExists = account_available = False;
+        errors = []
+        
+        user_exists = unavailable = email_exists = account_available = False;
         email_name = email_name.strip().replace('-', '').replace(' ', '') 
         email_name_length = len(email_name)
         valid = False
@@ -91,37 +103,38 @@ class AccountValidator():
         #Is this email taken?
         existingEmails = UserDetails.gql("WHERE emailName = :1 LIMIT 1",email_name)
         for existingEmail in existingEmails:        
-            emailExists = True;          
+            email_exists = True;          
         
         for unavailablename in unavailable_names:
             if unavailablename == email_name:
                 unavailable = True
                         
         if AccountValidator.validateEmail(full_email_name) == 0:
-            error = "1"
+            errors.append(1)
             #self.redirect("/#invalidemail")
-        elif userExists:
-            error = "2"
+        if user_exists:
+            errors.append(2)
             #self.redirect("/#accountexists") 
-        elif emailExists:
-            error = "3"
+        if email_exists:
+            errors.append(3)
             #self.redirect("/#emailexists")
-        elif unavailable:
-            error = "4"
+        if unavailable:
+            errors.append(4)
             #self.redirect("/#unavailable")            
-        elif email_name_length <= config.SETTINGS['minusername']:
-            error = "5"
+        if email_name_length <= config.SETTINGS['minusername']:
+            errors.append(5)
             #self.redirect("/#short")        
-        elif email_name_length >= config.SETTINGS['maxusername']:
-            error = "6"
-            #self.redirect("/#long")    
-        else:
+        if email_name_length >= config.SETTINGS['maxusername']:
+            errors.append(6)
+            #self.redirect("/#long")       
+            
+        if not errors:
             valid = True
             
         validation = {}
         validation['valid'] = valid
         validation['email_name'] = email_name
-        validation['error'] = error
+        validation['errors'] = errors
         return validation
     
     @staticmethod    

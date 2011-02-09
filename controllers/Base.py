@@ -16,8 +16,11 @@ class App():
         view_data['logged_in'] = False        
         view_data['base_title'] = config.SETTINGS['platform']
         view_data['hostname'] = config.SETTINGS['hostname']
-        view_data['emaildomain'] = config.SETTINGS['emaildomain']    
-               
+        view_data['emaildomain'] = config.SETTINGS['emaildomain']
+        if view_data.get('errors'):
+            error_codes = view_data['errors']
+        else:
+            error_codes = [] 
         user = users.get_current_user()
         if user:  
             view_data['logged_in'] = True
@@ -31,10 +34,12 @@ class App():
         
         
         if view_data.get('user_get'):               
-            view_data['account_exists'] = App.feed_exists(view_data['user_get'])
+            view_data['account_exists'] = self.feed_exists(view_data['user_get'])
             view_data['rss_link'] = '<link rel="alternate" type="application/rss+xml" title="'+ view_data.get('user_get')  +' feed at email2feed" href="/rss/' + view_data.get('user_get')  + '">'
             view_data['atom_link'] = '<link rel="alternate"  type="application/atom+xml"  title="'+ view_data.get('user_get')  +' feed at email2feed" href="/' + view_data.get('user_get')  + '">'
-            
+        
+        view_data['errors'] =  self.app_errors(error_codes)
+        
         return view_data   
     
     def account_exists(self, account_name): 
@@ -49,7 +54,7 @@ class App():
         account['account_name'] = account_name
         return account
     
-    @staticmethod   
+       
     def feed_exists(feed_name):
         exists = False    
         existing_feeds = UserDetails.gql("WHERE emailName = :1 LIMIT 1",feed_name) 
@@ -61,9 +66,12 @@ class App():
     
     def app_errors(self, error_codes):
         
-        error_output = {}
+        error_output = []
+        
+        errors = config.ERRORS
+        for error in error_codes:
+            error_output.append(config.ERRORS[error])      
         
         
-        return error_output
         
-        
+        return error_output        
