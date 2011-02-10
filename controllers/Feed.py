@@ -23,24 +23,28 @@ class ShowAll(webapp.RequestHandler): #Displays the user's web feed
         for existingUser in existingUsers:
             email_name = existingUser.emailName
             account_exists = True
-        feed_path = feed_url      
-        feed_url = config.SETTINGS['url'] +"/"+ feed_url
-         
-        user_email = email_name + config.SETTINGS['emaildomain']           
-        app = App()            
-        
-        emails = MailMessage.all().filter("toAddress = ", user_email).order("-dateReceived")      
-        emailCount = emails.count() 
-        if emailCount == 0:
-            empty = True 
-        this_data = { 'emails':emails, 'to':user_email,  'authControl':users.create_login_url("/"), 'empty': empty, 'feed_url':feed_url, 'feed_path':feed_path, 'account_exists':account_exists}      
-                  
-        
-       
-        view_data = app.data(this_data)
-                
-        path = os.path.join(main.ROOT_DIR, 'views/view/web.html')
-        self.response.out.write(template.render(path, view_data))      
+            
+        if account_exists:
+            feed_path = feed_url      
+            feed_url = config.SETTINGS['url'] +"/"+ feed_url
+             
+            user_email = email_name + config.SETTINGS['emaildomain']           
+            app = App()            
+            
+            emails = MailMessage.all().filter("toAddress = ", user_email).order("-dateReceived")      
+            emailCount = emails.count() 
+            if emailCount == 0:
+                empty = True 
+            this_data = { 'emails':emails, 'to':user_email,  'authControl':users.create_login_url("/"), 'empty': empty, 'feed_url':feed_url, 'feed_path':feed_path, 'account_exists':account_exists}      
+                      
+            
+           
+            view_data = app.data(this_data)
+                    
+            path = os.path.join(main.ROOT_DIR, 'views/view/web.html')
+            self.response.out.write(template.render(path, view_data))
+        else: 
+            self.redirect("/#")      
 
 class ShowMessage(webapp.RequestHandler): #show message by id
     def get(self, feed_url, messageid):    
