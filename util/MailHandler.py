@@ -65,6 +65,9 @@ class MailHandler(InboundMailHandler):
                 break
             if (contentType == 'text/plain'):
                 ret = body
-        if isinstance(ret, EncodedPayload):
+        if isinstance(ret, EncodedPayload):            
+            if ret.encoding == '8bit':
+                ret.encoding = '7bit' 
+            
             ret = ret.decode()
         return ret
