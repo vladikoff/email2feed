@@ -129,7 +129,8 @@ class ShowAtom(webapp.RequestHandler):
         
         if account_exists:
             FEED_TITLE = email_name + " - email2feed"
-            FEED_URL = "http://"+config.SETTINGS['hostname']+"/"+feed_url        
+            FEED_URL = "http://"+config.SETTINGS['hostname']+"/"+feed_url     
+            FEED_URL_VIEW = "http://"+config.SETTINGS['hostname']+"/view/"+feed_url     
             USER_EMAIL = email_name + config.SETTINGS['emaildomain']  # ex. user@appid.appspotmail.com  
             USER_LINK = config.SETTINGS['url'] + "/view/" + feed_url
             latestMessageVal = "";
@@ -142,10 +143,13 @@ class ShowAtom(webapp.RequestHandler):
             for latestMessage in latestMessageFtch:    
                 latestMessageVal = latestMessage.dateReceived   
                     
+            footer = "<div style='clear:both;text-align: right; width:100%'><span style='color:#4E83B9'>email<span style='color:#1A4979; font-weight: bold;'>2</span><span style='color:#4E83B9'>feed</span> | <a target='_blank' style='color:#4E83B9;text-decoration: none;' href='" + FEED_URL_VIEW + "'>settings</a></div>"        
+                    
             this_data = {
                          "results"      :   results
                         ,"feedTitle"    :   FEED_TITLE
                         ,"feedUrl"      :   FEED_URL
+                        ,"feedFooter"   :   footer
                         ,"updated"      :   latestMessageVal
                         ,"name"         :   email_name
                         ,"email"        :   USER_EMAIL

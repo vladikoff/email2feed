@@ -14,6 +14,6 @@
     <link href="{{userlink}}/{{result.key.id}}" />
     <id>{{userlink}}/{{result.key.id}}</id>
     <updated>{{result.dateReceived|date:"Y-m-d\TH:i:s\Z"}}</updated>
-    <summary type="html">{% spaceless %}{{result.body|escape}}{% endspaceless %}</summary>
+    <summary type="html">{% spaceless %}{{result.body|escape}}{{feedFooter|escape}}{% endspaceless %}</summary>
   </entry>{% endfor %}
 </feed>
